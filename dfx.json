@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "DMS_backend": {
+      "candid": "src/DMS_backend/DMS_backend.did",
+      "package": "DMS_backend",
+      "type": "rust"
+    },
+    "DMS_frontend": {
+      "dependencies": [
+        "DMS_backend"
+      ],
+      "source": [
+        "src/DMS_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "DMS_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

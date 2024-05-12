@@ -1,0 +1,31 @@
+{
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "name": "DMS",
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "prebuild": "npm run prebuild --workspaces --if-present",
+    "pretest": "npm run prebuild --workspaces --if-present",
+    "start": "npm start --workspaces --if-present",
+    "test": "npm test --workspaces --if-present"
+  },
+  "type": "module",
+  "workspaces": [
+    "src/DMS_frontend"
+  ],
+  "dependencies": {
+    "@connect2ic/core": "^0.2.0-beta.24",
+    "@connect2ic/react": "^0.2.0-beta.24",
+    "@react-three/drei": "^9.105.5",
+    "@react-three/fiber": "^8.16.3",
+    "antd": "^5.16.2",
+    "antd-img-crop": "^4.21.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.1.7",
+    "tailwind-merge": "^2.3.0",
+    "three": "^0.164.1",
+    "three-globe": "^2.31.0"
+  }
+}
