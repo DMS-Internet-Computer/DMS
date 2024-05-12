@@ -22,6 +22,14 @@ type Departments = HashMap<String, Doctors>;
 type Doctors = HashMap<String, Dates>;
 type Dates = HashMap<String, Vec<String>>;
 type Medications = HashMap<String, Medication>;
+type ProviderRequests = HashMap<String, ProviderRequest>;
+
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct ProviderRequest {
+    pub provider_id: String,
+    pub provider_name: String,
+    pub request_status: u8,
+}
 
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Medication {
@@ -52,17 +60,7 @@ struct Session {
     pub user_id: Principal, // Check here
 }
 
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct PersonalData {
-    pub name: String,
-    pub surname: String,
-    pub birthday: String,
-    pub country: String,
-    pub city: String,
-    pub province: String,
-    pub mail: String,
-    pub phone: String,
-}
+
 
 // User Struct
 #[derive(Clone, Debug, CandidType, Serialize)]
@@ -71,6 +69,7 @@ struct User {
     pub appointments: Appointments,
     pub health_data: HealthData,
     pub personal_data: PersonalData,
+    pub provider_requests: ProviderRequests,
 }
 
 #[derive(Clone, Debug, CandidType, Serialize)]
@@ -81,6 +80,18 @@ struct HealthData {
     pub allergies: Vec<String>,
     pub diseases: Vec<String>,
     pub medications: Medications,
+}
+
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct PersonalData {
+    pub name: String,
+    pub surname: String,
+    pub birthday: String,
+    pub country: String,
+    pub city: String,
+    pub province: String,
+    pub mail: String,
+    pub phone: String,
 }
 
 #[derive(Clone, Debug, CandidType, Serialize)]

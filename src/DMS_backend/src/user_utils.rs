@@ -1,7 +1,36 @@
-use crate::{USERS, PROVIDERS, AppointmentDetails};
+use crate::{USERS, PROVIDERS, AppointmentDetails, ProviderRequests, ProviderRequest};
 use ic_cdk::{query, update};
 use candid::Principal;
 use serde_json;
+
+#[update]
+fn create_provider_request(user_id: String, provider_name: String) -> Result<(), String>{
+    let new_provider_request = ProviderRequest{
+        provider_id: user_id.clone(),
+        provider_name: provider_name,
+        request_status: 0,
+    };
+
+    USERS.with(|users| {
+        if let Some(user) = users.borrow_mut().get_mut(&Principal::from_text(&user_id.clone()).expect("User not found.")) {
+            user.provider_requests.insert(user_id.clone(), new_provider_request);
+            Ok(())
+        } else {
+            Err("User not found.".to_string())
+        }
+    })
+    // If user with user_id exists take it.
+    // Add the new provider_request with the inputs to its ProviderRequests 
+}
+
+#[query]
+fn list_provider_requests() -> Vec<ProviderRequest> {
+    USERS.with(|users| {
+        users.borrow().values().flat_map(|user| {
+            user.provider_requests.values().cloned()
+        }).collect()
+    })
+}
 
 #[update]
 fn make_appointment(provider_id: String, department_name: String, doctor_name: String, date: String, time: String) -> Result <(), String>{

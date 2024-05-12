@@ -63,6 +63,7 @@ fn create_user(identity: String) -> Result<(), String> {
                     mail: "".to_string(),
                     phone: "".to_string(),
                 },
+                provider_requests: HashMap::new(),
                 
             };
 
