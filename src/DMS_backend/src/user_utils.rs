@@ -23,6 +23,30 @@ fn create_provider_request(user_id: String, provider_name: String) -> Result<(),
     // Add the new provider_request with the inputs to its ProviderRequests 
 }
 
+#[update]
+fn update_provider_request(user_id: String, new_request_status: u8) -> Result<(), String> {
+    if new_request_status == 0 || new_request_status == 1 || new_request_status == 2 {
+        USERS.with(|users| {
+            if let Some(user) = users.borrow_mut().get_mut(&Principal::from_text(&user_id).expect("User not found.")) {
+                if let Some(provider_request) = user.provider_requests.get_mut(&user_id) {
+                    provider_request.request_status = new_request_status;
+                    if new_request_status == 1
+                    {
+                        user.user_type = 1;
+                    }
+                    Ok(())
+                } else {
+                    Err("Provider request not found.".to_string())
+                }
+            } else {
+                Err("User not found.".to_string())
+            }
+        })
+    } else {
+        Err("Incorrect request status".to_string())
+    }
+}
+
 #[query]
 fn list_provider_requests() -> Vec<ProviderRequest> {
     USERS.with(|users| {
@@ -135,6 +159,8 @@ fn get_current_user(identity: String) -> Option<String> {
                 "appointments": user.appointments,
                 "health_data": user.health_data,
                 "personal_data": user.personal_data,
+                "provider_requests": user.provider_requests,
+                "user_type": user.user_type,
             });
             Some(user_json.to_string())
         } else {

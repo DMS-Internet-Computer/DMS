@@ -70,6 +70,7 @@ struct User {
     pub health_data: HealthData,
     pub personal_data: PersonalData,
     pub provider_requests: ProviderRequests,
+    pub user_type: u8,
 }
 
 #[derive(Clone, Debug, CandidType, Serialize)]

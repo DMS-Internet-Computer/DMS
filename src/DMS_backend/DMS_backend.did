@@ -58,6 +58,7 @@ type User = record {
   health_data: HealthData;
   personal_data: PersonalData;
   provider_requests: ProviderRequests;
+  user_type: nat8;
 };
 
 type Dates = record {text; vec text};
@@ -119,6 +120,6 @@ service : {
 
   create_provider_request : (user_id: text, provider_name: text) -> (variant {Ok: null; Err: text});
   list_provider_requests : () -> (vec ProviderRequest);
-  
+  update_provider_request : (user_id: text, new_request_status: nat8) -> (variant {Ok: null; Err: text});
   get_current_user : (identity: text) -> (opt text);
 };
