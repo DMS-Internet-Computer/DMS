@@ -24,43 +24,19 @@ type Dates = HashMap<String, Vec<String>>;
 type Medications = HashMap<String, Medication>;
 type ProviderRequests = HashMap<String, ProviderRequest>;
 
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct ProviderRequest {
-    pub provider_id: String,
-    pub provider_name: String,
-    pub request_status: u8,
-}
-
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct Medication {
-    pub prescription_date: String,
-    pub barcode: String,
-    pub prescription_number: String,
-    pub medicine_name: String,
-    pub dosage: String,
-    pub period: String,
-    pub usage_method: String,
-    pub usage_count: String,
-    pub box_count: String,
-    pub provider_name: String,
-    pub doctor_name: String,
-    pub box_image: Vec<u8>,
-    pub prospectus_pdf: Vec<u8>,
-}
-
 thread_local! {
     pub static ACTIVE_SESSIONS: RefCell<ActiveSessions> = RefCell::default();
     pub static USERS: RefCell<Users> = RefCell::default();
     pub static PROVIDERS: RefCell<Providers> = RefCell::default();
 }
 
+
+
 // Session Struct
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Session {
     pub user_id: Principal, // Check here
 }
-
-
 
 // User Struct
 #[derive(Clone, Debug, CandidType, Serialize)]
@@ -84,6 +60,23 @@ struct HealthData {
 }
 
 #[derive(Clone, Debug, CandidType, Serialize)]
+struct Medication {
+    pub prescription_date: String,
+    pub barcode: String,
+    pub prescription_number: String,
+    pub medicine_name: String,
+    pub dosage: String,
+    pub period: String,
+    pub usage_method: String,
+    pub usage_count: String,
+    pub box_count: String,
+    pub provider_name: String,
+    pub doctor_name: String,
+    pub box_image: Vec<u8>,
+    pub prospectus_pdf: Vec<u8>,
+}
+
+#[derive(Clone, Debug, CandidType, Serialize)]
 struct PersonalData {
     pub name: String,
     pub surname: String,
@@ -103,10 +96,17 @@ struct AppointmentDetails {
     pub time: String,
 }
 
-#[derive(Clone, Debug, Serialize, CandidType)]
-struct Provider { // a.k.a. Hospitals - Medical Service PROVIDERS
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct ProviderRequest {
+    pub provider_id: String,
     pub provider_name: String,
-    pub provider_location: String, // <--< This can be removed 
+    pub request_status: u8,
+}
+
+#[derive(Clone, Debug, Serialize, CandidType)]
+struct Provider { 
+    pub provider_name: String,
+    pub provider_location: String,
     pub departments: Departments, // Department's Name, Department's Doctors
 }
 

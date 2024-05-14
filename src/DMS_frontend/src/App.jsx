@@ -14,31 +14,11 @@ function App() {
     onDisconnect: () => {
     }
   });
-  useEffect(() => {
-    const createUser = async () => {
-      try {
-        if (!principal) {
-          console.log("Waiting for principal...");
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-        console.log("Creating user...");
-        await DMS_backend.create_user(principal);
-        console.log("User created.");
-      } catch (error) {
-        console.error("Error during user creation:", error);
-      }
-    };
-
-    if (isConnected) {
-      createUser();
-    }
-  }, []);
 
 
-  
   return (
     <main>
-      {isConnected ? <MainPage /> : <LoginPage />}
+      {(isConnected && principal) ? <MainPage /> : <LoginPage />}
     </main>
   );
 }
