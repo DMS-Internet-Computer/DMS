@@ -24,6 +24,7 @@ import ProviderRequests from '../UserMenu/ProviderRequests/ProviderRequests';
 import UserProfile from '../Profile/UserProfile';
 import Visits from '../UserMenu/Visits/Visits';
 import MainContent from './MainContent/MainContent';
+import ManageDepartments from '../ProviderMenu/ManageDepartments/ManageDepartments';
 
 const { Header, Sider, Content } = Layout;
 
@@ -82,7 +83,7 @@ function MainPage() {
     };
     const providerMenuItems = [
         { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
-        { key: '2', icon: <UserOutlined />, label: 'Manage Departments', pagenumber: 2, component: <MainContent /> },
+        { key: '2', icon: <UserOutlined />, label: 'Manage Departments', pagenumber: 2, component: <ManageDepartments /> },
         { key: '3', icon: <UserOutlined />, label: 'Manage Doctors', pagenumber: 3, component: <MainContent /> },
         { key: '4', icon: <UploadOutlined />, label: 'Provider Approvals', pagenumber: 4, component: <MainContent /> },
     ];
