@@ -18,8 +18,8 @@ type Appointments = HashMap<Principal, Vec<AppointmentDetails>>; // This princip
 type Providers = HashMap<Principal, Provider>;
 
 // Provider Subsections
-type Departments = HashMap<String, Doctors>;
-type Doctors = HashMap<String, Dates>;
+type Departments = HashMap<String, Department>;
+type Doctors = HashMap<String, Doctor>;
 type Dates = HashMap<String, Vec<String>>;
 type Medications = HashMap<String, Medication>;
 type ProviderRequests = HashMap<String, ProviderRequest>;
@@ -30,7 +30,18 @@ thread_local! {
     pub static PROVIDERS: RefCell<Providers> = RefCell::default();
 }
 
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Department {
+    pub department_name: String,
+    pub doctors: Doctors,
+}
 
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Doctor {
+    pub doctor_name: String,
+    pub doctor_department: String,
+    pub dates: Dates,
+}
 
 // Session Struct
 #[derive(Clone, Debug, CandidType, Serialize)]

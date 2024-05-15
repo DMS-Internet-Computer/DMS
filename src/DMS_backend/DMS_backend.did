@@ -62,8 +62,20 @@ type User = record {
 };
 
 type Dates = record {text; vec text};
-type Doctors = record {text; Dates};
-type Departments = record {text; Doctors};
+
+type Doctor = record {
+  doctor_name: text;
+  doctor_department: text;
+  dates: Dates;
+};
+
+type Doctors = record {text; Doctor};
+
+type Department = record {
+  department_name: text;
+  doctors: Doctors;
+}; 
+type Departments = record {text; Department};
 
 type Provider = record {
   provider_name: text;
