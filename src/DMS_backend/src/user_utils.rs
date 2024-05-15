@@ -1,4 +1,4 @@
-use crate::{USERS, PROVIDERS, AppointmentDetails, ProviderRequests, ProviderRequest};
+use crate::{USERS, PROVIDERS, Provider, Departments, Department, AppointmentDetails, ProviderRequests, ProviderRequest};
 use ic_cdk::{query, update};
 use candid::Principal;
 use serde_json;
@@ -33,6 +33,14 @@ fn update_provider_request(user_id: String, new_request_status: u8) -> Result<()
                     if new_request_status == 1
                     {
                         user.user_type = 1;
+                        PROVIDERS.with(|providers| {
+                            let new_provider = Provider {
+                                provider_name: "".to_string(),
+                                provider_location: "".to_string(),
+                                departments: Default::default(),
+                            };
+                            providers.borrow_mut().insert(Principal::from_text(&user_id).expect("User not found."), new_provider);
+                        })
                     }
                     Ok(())
                 } else {

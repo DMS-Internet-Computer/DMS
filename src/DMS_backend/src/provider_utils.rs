@@ -13,18 +13,18 @@ use std::collections::HashMap;
 
 // List Departments will do select an provider from PROVIDERS with desired provider ID.
 
-#[query]
-fn list_departments(provider_id: String) -> Vec<String> {
-    PROVIDERS.with(|providers| {
-        let provider = providers.borrow();
-        provider
-            .get(&Principal::from_text(&provider_id.clone()).expect("Provider not found"))
-            .map(|provider| provider.departments.keys().cloned().collect())
-            .unwrap_or_else(|| {
-                panic!("Provider with id {} not found", provider_id);
-            })
-    })
-}
+// #[query]
+// fn list_departments(provider_id: String) -> Vec<String> {
+//     PROVIDERS.with(|providers| {
+//         let provider = providers.borrow();
+//         provider
+//             .get(&Principal::from_text(&provider_id.clone()).expect("Provider not found"))
+//             .map(|provider| provider.departments.keys().cloned().collect())
+//             .unwrap_or_else(|| {
+//                 panic!("Provider with id {} not found", provider_id);
+//             })
+//     })
+// }
 
 #[update]
 fn add_department(provider_id: String, department_name: String) -> Result<(), String> {
@@ -45,6 +45,27 @@ fn add_department(provider_id: String, department_name: String) -> Result<(), St
     })
 }
 
+
+#[query]
+fn list_providers() -> Vec<String> {
+    PROVIDERS.with(|providers| {
+        let providers = providers.borrow();
+        providers.keys().map(|principal| principal.to_text()).collect()
+    })
+}
+
+#[query]
+fn list_departments(provider_id: String) -> Result<Vec<String>, String> {
+    PROVIDERS.with(|providers| {
+        let providers = providers.borrow();
+        if let Some(provider) = providers.get(&Principal::from_text(&provider_id).expect("Provider not found")) {
+            let departments = provider.departments.keys().cloned().collect();
+            Ok(departments)
+        } else {
+            Err("Provider not found.".to_string())
+        }
+    })
+}
 // #[query]
 // fn list_doctors(provider_id: String, department_name: String) -> Vec<String> {
 //     PROVIDERS.with(|providers| {

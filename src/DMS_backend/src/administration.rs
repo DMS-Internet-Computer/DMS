@@ -51,12 +51,12 @@ fn set_provider(user_id: String) -> Result<(), String> {
     Ok(())
 }
 
-#[query]
-fn list_providers() -> Vec<String> {
-    PROVIDERS.with(|providers| {
-        providers.borrow().values().map(|provider| provider.provider_name.clone()).collect()
-    })
-}
+// #[query]
+// fn list_providers() -> Vec<String> {
+//     PROVIDERS.with(|providers| {
+//         providers.borrow().values().map(|provider| provider.provider_name.clone()).collect()
+//     })
+// }
 
 #[update]
 fn remove_provider(user_id: String) -> Result<(), String> {

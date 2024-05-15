@@ -109,7 +109,7 @@ service : {
 
   // provider functions
   // listing
-  list_departments : (provider_id: text) -> (vec text);
+  list_departments : (provider_id: text) -> (variant{Ok: vec text; Err: text});
   list_doctors: (provider_id: text, department_name: text) -> (vec text);
   list_dates: (provider_id: text, department_name: text, doctors_name: text) -> (vec text);
   list_times: (provider_id: text, department_name: text, doctors_name: text, selected_date: text) -> (vec text);
