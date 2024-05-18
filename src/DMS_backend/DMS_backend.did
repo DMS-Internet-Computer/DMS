@@ -58,7 +58,7 @@ type Doctors = record {text; Doctor};
 type Doctor = record {
   doctor_name: text;
   doctor_department: text;
-  dates: Dates;
+  dates: vec text;
 };
 type Dates = record {text; vec text};
 
@@ -100,6 +100,9 @@ service : {
   is_provider: () -> (bool);
   remove_provider: (text) -> (variant {Ok: null; Err: text});
 
+// doctor man
+  add_doctor: (text, text, text, text) -> (variant {Ok: null; Err: text});
+  list_doctors: (text, text) -> (vec Doctor);
   // user functions
   make_appointment: (text, text, text, text, text) -> (variant {Ok: null; Err: text});
   list_appointments : (text) -> (vec vec text);
@@ -108,7 +111,6 @@ service : {
   // provider functions
   // listing
   list_departments : (provider_id: text) -> (variant{Ok: vec Department; Err: text});
-  list_doctors: (provider_id: text, department_name: text) -> (vec text);
   list_dates: (provider_id: text, department_name: text, doctors_name: text) -> (vec text);
   list_times: (provider_id: text, department_name: text, doctors_name: text, selected_date: text) -> (vec text);
   get_provider_info: (provider_id: text) -> (opt text); 
@@ -120,7 +122,6 @@ service : {
 
   // adding
   add_department : (provider_id: text, department_name: text) -> (variant {Ok: null; Err: text});
-  add_doctor : (provider_id: text, department_name: text, doctor_name: text) -> (variant {Ok: null; Err: text});
   add_date : (provider_id: text, department_name: text, doctor_name: text, date: text) -> (variant {Ok: null; Err: text});
   add_time : (provider_id: text, department_name: text, doctor_name: text, date: text, time: text) -> (variant {Ok: null; Err: text});
   add_disease : (user_id: text, disease_name: text) -> (variant {Ok: null; Err: text});

@@ -142,9 +142,6 @@ function UserProfile() {
                                     </ImgCrop>
                                 </Col>
                             </Row>
-
-
-
                             <Divider orientation="left">Location Information</Divider>
                             <DescriptionItem title="City" content={userData.personal_data.city || <Tooltip  title={"This information is empty on your profile. Please update."}>
                                 <QuestionCircleOutlined />

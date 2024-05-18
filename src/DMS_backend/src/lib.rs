@@ -4,6 +4,7 @@ mod func_provider;
 
 mod func_medications;
 mod func_departments;
+mod func_doctors;
 mod func_provider_request;
 
 use candid::{Principal, CandidType};

@@ -177,24 +177,30 @@ function ProviderRequests() {
           </Card>
         </Col>
         <Col span={14}>
-          <Card title="Waiting Approvals" bordered={true}>
-            <Table
-              columns={columns}
-              expandable={{
-                expandedRowRender: (record) => (
-                  <p
-                    style={{
-                      margin: 0,
-                    }}
-                  >
-                    {/* {record.description} */}
-                    Request details will be added.
-                  </p>
-                ),
-                rowExpandable: (record) => record.name !== 'Not Expandable',
-              }}
-              dataSource={requests}
-            />
+        <Card title="Waiting Approvals" bordered={true}>
+            {loading ? (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+                <Spin size="large" />
+              </div>
+            ) : (
+              <Table
+                columns={columns}
+                expandable={{
+                  expandedRowRender: (record) => (
+                    <p
+                      style={{
+                        margin: 0,
+                      }}
+                    >
+                      {/* {record.description} */}
+                      Request details will be added.
+                    </p>
+                  ),
+                  rowExpandable: (record) => record.name !== 'Not Expandable',
+                }}
+                dataSource={requests}
+              />
+            )}
           </Card>
         </Col>
       </Row>
