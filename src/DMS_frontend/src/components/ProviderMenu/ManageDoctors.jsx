@@ -5,7 +5,7 @@ import { DMS_backend } from 'declarations/DMS_backend';
 import { ConnectButton, useConnect } from "@connect2ic/react"
 import { render } from 'react-dom';
 
-function ManageDepartments() {
+function ManageDoctors() {
   const [modal2Open, setModal2Open] = useState(false);
   const [departmentsList, setDepartmentsList] = useState([]);
   const [loading, setLoading] = useState(false); // Add loading state
@@ -39,26 +39,25 @@ function ManageDepartments() {
 
   const departmentColumns = [
     {
-      title: 'Department Name',
-      dataIndex: 'department_name',
-      key: 'department_name',
+      title: 'Doctor Name',
+      dataIndex: 'doctor_name',
+      key: 'doctor_name',
     },
     {
-      title: 'Doctor Count',
-      dataIndex: 'doctors',
-      key: 'doctors',
-      render: (text, record) => record.doctors.length
+      title: 'Doctor Department',
+      dataIndex: 'doctor_department',
+      key: 'doctor_department',
     },
     {
       title: 'Actions',
       dataIndex: 'details',
       render: (text, record) => record.doctors.length === 0 ? (
         <Tooltip title={"Zero doctors found. Add one."}>
-          <Button disabled={true} type="primary"><QuestionCircleOutlined /> Show Doctors</Button>
+          <Button disabled={true} type="primary"><QuestionCircleOutlined /> Show Details</Button>
         </Tooltip>
       ) : (
         <Button type="primary">
-          Show Doctors
+          Show Details
         </Button>
       )
     }
@@ -81,7 +80,7 @@ function ManageDepartments() {
         <>
 
           <Button style={{marginBottom: '10px'}} onClick={() => setModal2Open(true)}>
-           <PlusCircleOutlined />Add New Department
+           <PlusCircleOutlined />Add New Doctor
           </Button>
           <Table size="small" dataSource={departmentsList} columns={departmentColumns} />
         </>
@@ -114,4 +113,4 @@ function ManageDepartments() {
   )
 }
 
-export default ManageDepartments;
+export default ManageDoctors;

@@ -25,6 +25,7 @@ import UserProfile from '../Profile/UserProfile';
 import Visits from '../UserMenu/Visits/Visits';
 import MainContent from './MainContent/MainContent';
 import ManageDepartments from '../ProviderMenu/ManageDepartments/ManageDepartments';
+import ManageDoctors from '../ProviderMenu/ManageDoctors';
 
 const { Header, Sider, Content } = Layout;
 
@@ -73,7 +74,8 @@ function MainPage() {
 
     const get_user_data = async (identity) => {
         const userData = await DMS_backend.get_current_user(identity);
-        console.log("userData:", userData); // Log userData to check its value
+        console.log(identity);
+        console.log("userData:", JSON.parse(userData)); // Log userData to check its value
         try {
             return JSON.parse(userData);
         } catch (error) {
@@ -84,15 +86,15 @@ function MainPage() {
     const providerMenuItems = [
         { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
         { key: '2', icon: <UserOutlined />, label: 'Manage Departments', pagenumber: 2, component: <ManageDepartments /> },
-        { key: '3', icon: <UserOutlined />, label: 'Manage Doctors', pagenumber: 3, component: <MainContent /> },
-        { key: '4', icon: <UploadOutlined />, label: 'Provider Approvals', pagenumber: 4, component: <MainContent /> },
+        { key: '3', icon: <UserOutlined />, label: 'Manage Doctors', pagenumber: 3, component: <ManageDoctors /> },
+        { key: '4', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 4, component: <ProviderRequests /> },
     ];
 
     const doctorMenuItems = [
         { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
         { key: '2', icon: <UserOutlined />, label: 'Manage Appointments', pagenumber: 2 },
         { key: '3', icon: <UserOutlined />, label: 'Patient Management', pagenumber: 3 },
-        { key: '4', icon: <UploadOutlined />, label: 'Provider Approvals', pagenumber: 4 },
+        { key: '4', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 4, component: <ProviderRequests /> },
     ];
 
     const userMenuItems = [
@@ -106,7 +108,7 @@ function MainPage() {
         { key: '8', icon: <UploadOutlined />, label: 'Radiological Images', pagenumber: 8, component: <RadiologicalImages /> },
         { key: '9', icon: <UploadOutlined />, label: 'Allergies', pagenumber: 9, component: <Allergies /> },
         { key: '10', icon: <UploadOutlined />, label: 'Medications', pagenumber: 10, component: <Medications /> },
-        { key: '11', icon: <UploadOutlined />, label: 'Provider Request', pagenumber: 11, component: <ProviderRequests /> },
+        { key: '11', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 11, component: <ProviderRequests /> },
     ];
 
     const MenuItems = isProvider ? providerMenuItems : userMenuItems;

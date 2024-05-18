@@ -1,13 +1,12 @@
 type Principal = blob;
 
 type AppointmentDetails = record {
-  department : text;
+  department: text;
   doctor: text;
   date: text;
   time: text;
 };
 type Appointments = record {Principal; vec AppointmentDetails};
-
 
 type ProviderRequest = record {
   provider_id: text;
@@ -34,6 +33,40 @@ type PersonalData = record {
     mail: text;
     phone: text;
 };
+
+type User = record {
+  identity: text;
+  appointments: Appointments;
+  health_data: HealthData;
+  personal_data: PersonalData;
+  provider_requests: ProviderRequests;
+  user_type: nat8;
+};
+
+type Department = record {
+  department_name: text;
+  doctors: vec Doctor;
+};
+
+type Provider = record {
+  provider_name: text;
+  provider_location: text;
+  departments: vec Department;
+};
+
+type Doctors = record {text; Doctor};
+type Doctor = record {
+  doctor_name: text;
+  doctor_department: text;
+  dates: Dates;
+};
+type Dates = record {text; vec text};
+
+
+type Session = record {
+  user_id: text;
+};
+
 type Medication = record { 
   prescription_date: text;
   barcode: text; 
@@ -52,41 +85,6 @@ type Medication = record {
 
 
 
-type User = record {
-  identity: text;
-  appointments: Appointments;
-  health_data: HealthData;
-  personal_data: PersonalData;
-  provider_requests: ProviderRequests;
-  user_type: nat8;
-};
-
-type Dates = record {text; vec text};
-
-type Doctor = record {
-  doctor_name: text;
-  doctor_department: text;
-  dates: Dates;
-};
-
-type Doctors = record {text; Doctor};
-
-type Department = record {
-  department_name: text;
-  doctors: Doctors;
-}; 
-type Departments = record {text; Department};
-
-type Provider = record {
-  provider_name: text;
-  provider_location: text;
-  departments: Departments;
-};
-
-type Session = record {
-  user_id: text;
-};
-
 service : {
   // auth functions
   sign_up : (text, text) -> (variant { Ok : null; Err : text });
@@ -98,7 +96,7 @@ service : {
   list_active_sessions: () -> (vec text);
   list_signed_users: () -> (vec text);
   set_provider: (text) -> (variant {Ok: null; Err: text});
-  list_providers: () -> (vec text);
+  list_providers: () -> (vec Provider);
   is_provider: () -> (bool);
   remove_provider: (text) -> (variant {Ok: null; Err: text});
 
@@ -109,7 +107,7 @@ service : {
 
   // provider functions
   // listing
-  list_departments : (provider_id: text) -> (variant{Ok: vec text; Err: text});
+  list_departments : (provider_id: text) -> (variant{Ok: vec Department; Err: text});
   list_doctors: (provider_id: text, department_name: text) -> (vec text);
   list_dates: (provider_id: text, department_name: text, doctors_name: text) -> (vec text);
   list_times: (provider_id: text, department_name: text, doctors_name: text, selected_date: text) -> (vec text);
@@ -127,6 +125,8 @@ service : {
   add_time : (provider_id: text, department_name: text, doctor_name: text, date: text, time: text) -> (variant {Ok: null; Err: text});
   add_disease : (user_id: text, disease_name: text) -> (variant {Ok: null; Err: text});
   add_allergy : (user_id: text, allergy_name: text) -> (variant {Ok: null; Err: text});
+  
+  // func_medications
   add_medication : (user_id: text, prescription_date: text, barcode: text, prescription_number: text, medicine_name: text, dosage: text, period: text, usage_method: text, usage_count: text, box_count: text, provider_name: text, doctor_name: text, box_image: vec nat8, prospectus_pdf: vec nat8) -> (variant {Ok: null; Err: text});
   list_medications : (user_id: text) -> (variant {Ok: vec Medication; Err: text});
 

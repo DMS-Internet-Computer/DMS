@@ -2,12 +2,17 @@ import { Table, Button, Image, Form, Input, Upload } from "antd";
 import { useState, useEffect } from "react";
 import { DMS_backend } from 'declarations/DMS_backend';
 import { PlusOutlined } from '@ant-design/icons';
+import { useConnect } from "@connect2ic/react"
 
 function Medications() {
   const [visible, setVisible] = useState(false);
   const [image, setImage] = useState()
   const [medications, setMedications] = useState([]);
   const [pdfFile, setPdfFile] = useState(null);
+  const { principal, isConnected } = useConnect({
+    onConnect: () => { },
+    onDisconnect: () => { }
+});
 
   useEffect(() => {
     fetchMedications();
@@ -166,7 +171,7 @@ function Medications() {
   const fetchMedications = async () => {
     try {
       const user_id = "2vxsx-fae"; // Replace with actual user ID
-      const medications = await DMS_backend.list_medications(user_id);
+      const medications = await DMS_backend.list_medications(principal);
       setMedications(medications);
       console.log(medications);
     } catch (error) {

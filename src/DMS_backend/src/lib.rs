@@ -1,55 +1,19 @@
-mod auth;
-mod administration;
-mod provider_utils;
-mod user_utils;
+
+mod func_user;
+mod func_provider;
+
+mod func_medications;
+mod func_departments;
+mod func_provider_request;
 
 use candid::{Principal, CandidType};
 use std::collections::HashMap;
 use std::cell::RefCell;
-
 use serde::Serialize;
 
-// Active Sessions contains logged in principal ids.
-type ActiveSessions = Vec<Session>;
-// User Types
+// struct_user 
 type Users = HashMap<Principal, User>;
-type Appointments = HashMap<Principal, Vec<AppointmentDetails>>; // This principal stands for providers principal ID
-// Admins ??
-type Providers = HashMap<Principal, Provider>;
 
-// Provider Subsections
-type Departments = HashMap<String, Department>;
-type Doctors = HashMap<String, Doctor>;
-type Dates = HashMap<String, Vec<String>>;
-type Medications = HashMap<String, Medication>;
-type ProviderRequests = HashMap<String, ProviderRequest>;
-
-thread_local! {
-    pub static ACTIVE_SESSIONS: RefCell<ActiveSessions> = RefCell::default();
-    pub static USERS: RefCell<Users> = RefCell::default();
-    pub static PROVIDERS: RefCell<Providers> = RefCell::default();
-}
-
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct Department {
-    pub department_name: String,
-    pub doctors: Doctors,
-}
-
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct Doctor {
-    pub doctor_name: String,
-    pub doctor_department: String,
-    pub dates: Dates,
-}
-
-// Session Struct
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct Session {
-    pub user_id: Principal, // Check here
-}
-
-// User Struct
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct User {
     pub identity: String,
@@ -59,7 +23,6 @@ struct User {
     pub provider_requests: ProviderRequests,
     pub user_type: u8,
 }
-
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct HealthData {
     pub height: String,
@@ -98,6 +61,51 @@ struct PersonalData {
     pub mail: String,
     pub phone: String,
 }
+
+// Active Sessions contains logged in principal ids.
+type ActiveSessions = Vec<Session>;
+// User Types
+
+type Appointments = HashMap<Principal, Vec<AppointmentDetails>>; // This principal stands for providers principal ID
+// Admins ??
+
+type Providers = HashMap<Principal, Provider>;
+// Provider Subsections
+type Departments = HashMap<String, Department>;
+type Doctors = HashMap<String, Doctor>;
+type Dates = HashMap<String, Vec<String>>;
+type Medications = HashMap<String, Medication>;
+type ProviderRequests = HashMap<String, ProviderRequest>;
+
+thread_local! {
+    pub static ACTIVE_SESSIONS: RefCell<ActiveSessions> = RefCell::default();
+    pub static USERS: RefCell<Users> = RefCell::default();
+    pub static PROVIDERS: RefCell<Providers> = RefCell::default();
+}
+
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Department {
+    pub department_name: String,
+    pub doctors: Doctors,
+}
+
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Doctor {
+    pub doctor_name: String,
+    pub doctor_department: String,
+    pub dates: Dates,
+}
+
+// Session Struct
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Session {
+    pub user_id: Principal, // Check here
+}
+
+// User Struct
+
+
+
 
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct AppointmentDetails {

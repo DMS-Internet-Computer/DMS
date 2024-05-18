@@ -19,7 +19,6 @@ function MainContent() {
               items={[{ label: "Smart Assistant", key: 1, children: <SmartAssistant /> }]}
             />
           </Card>
-          <Space size={"large"} />
           <Card className='appointment-section'>
             <Tabs
               //onChange={onChange}
@@ -27,7 +26,6 @@ function MainContent() {
               items={[{ label: "Active Appointments", key: 1, children: <ActiveAppointments /> }, { label: "Last Appointments", key: 2, children: <LastAppointments /> }]}
             />
           </Card>
-          <button onClick={listActiveSession}>Sessions</button>
         </div>
       </>
     )
