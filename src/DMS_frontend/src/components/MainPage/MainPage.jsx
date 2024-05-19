@@ -61,6 +61,7 @@ function MainPage() {
                 const userData = await get_user_data(principal);
                 setUser(userData);
                 setIsProvider(userData.user_type === 1);
+                setIsDoctor(userData.user_type === 2);
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -111,7 +112,7 @@ function MainPage() {
         { key: '11', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 11, component: <ProviderRequests /> },
     ];
 
-    const MenuItems = isProvider ? providerMenuItems : userMenuItems;
+    const MenuItems = isProvider ? providerMenuItems : (isDoctor ? doctorMenuItems : userMenuItems);
 
     return (
         <div className='main-page'>
