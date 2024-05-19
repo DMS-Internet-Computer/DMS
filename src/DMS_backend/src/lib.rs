@@ -14,7 +14,6 @@ use serde::Serialize;
 
 // struct_user 
 type Users = HashMap<Principal, User>;
-
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct User {
     pub identity: String,
@@ -22,7 +21,7 @@ struct User {
     pub health_data: HealthData,
     pub personal_data: PersonalData,
     pub provider_requests: ProviderRequests,
-    pub user_type: u8,
+    pub user_type: u8, // 0 normal 1 provider 2 doctor
 }
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct HealthData {
@@ -33,7 +32,18 @@ struct HealthData {
     pub diseases: Vec<String>,
     pub medications: Medications,
 }
-
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct PersonalData {
+    pub name: String,
+    pub surname: String,
+    pub birthday: String,
+    pub country: String,
+    pub city: String,
+    pub province: String,
+    pub mail: String,
+    pub phone: String,
+}
+type Medications = HashMap<String, Medication>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Medication {
     pub prescription_date: String,
@@ -51,63 +61,13 @@ struct Medication {
     pub prospectus_pdf: Vec<u8>,
 }
 
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct PersonalData {
-    pub name: String,
-    pub surname: String,
-    pub birthday: String,
-    pub country: String,
-    pub city: String,
-    pub province: String,
-    pub mail: String,
-    pub phone: String,
-}
-
-// Active Sessions contains logged in principal ids.
 type ActiveSessions = Vec<Session>;
-// User Types
-
-type Appointments = HashMap<Principal, Vec<AppointmentDetails>>; // This principal stands for providers principal ID
-// Admins ??
-
-type Providers = HashMap<Principal, Provider>;
-// Provider Subsections
-type Departments = HashMap<String, Department>;
-type Doctors = HashMap<String, Doctor>;
-type Dates = HashMap<String, Vec<String>>;
-type Medications = HashMap<String, Medication>;
-type ProviderRequests = HashMap<String, ProviderRequest>;
-
-thread_local! {
-    pub static ACTIVE_SESSIONS: RefCell<ActiveSessions> = RefCell::default();
-    pub static USERS: RefCell<Users> = RefCell::default();
-    pub static PROVIDERS: RefCell<Providers> = RefCell::default();
-}
-
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct Department {
-    pub department_name: String,
-    pub doctors: Doctors,
-}
-
-#[derive(Clone, Debug, CandidType, Serialize)]
-struct Doctor {
-    pub doctor_name: String,
-    pub doctor_department: String,
-    pub dates: Dates,
-}
-
-// Session Struct
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Session {
     pub user_id: Principal, // Check here
 }
 
-// User Struct
-
-
-
-
+type Appointments = HashMap<Principal, Vec<AppointmentDetails>>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct AppointmentDetails {
     pub department: String,
@@ -116,6 +76,31 @@ struct AppointmentDetails {
     pub time: String,
 }
 
+type Providers = HashMap<Principal, Provider>;
+#[derive(Clone, Debug, Serialize, CandidType)]
+struct Provider { 
+    pub provider_name: String,
+    pub provider_location: String,
+    pub departments: Departments,
+}
+
+type Departments = HashMap<String, Department>;
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Department {
+    pub department_name: String,
+    pub doctors: Doctors,
+}
+
+type Doctors = HashMap<String, Doctor>;
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Doctor {
+    pub doctor_name: String,
+    pub doctor_department: String,
+    pub dates: Dates,
+}
+type Dates = HashMap<String, Vec<String>>;
+
+type ProviderRequests = HashMap<String, ProviderRequest>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct ProviderRequest {
     pub provider_id: String,
@@ -123,10 +108,8 @@ struct ProviderRequest {
     pub request_status: u8,
 }
 
-#[derive(Clone, Debug, Serialize, CandidType)]
-struct Provider { 
-    pub provider_name: String,
-    pub provider_location: String,
-    pub departments: Departments, // Department's Name, Department's Doctors
+thread_local! {
+    pub static ACTIVE_SESSIONS: RefCell<ActiveSessions> = RefCell::default();
+    pub static USERS: RefCell<Users> = RefCell::default();
+    pub static PROVIDERS: RefCell<Providers> = RefCell::default();
 }
-

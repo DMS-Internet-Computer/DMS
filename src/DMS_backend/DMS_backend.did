@@ -45,23 +45,20 @@ type User = record {
 
 type Department = record {
   department_name: text;
-  doctors: vec Doctor;
+  doctors: vec record {text; Doctor};
 };
 
 type Provider = record {
   provider_name: text;
   provider_location: text;
-  departments: vec Department;
+  departments: vec record {text; Department};
 };
 
-type Doctors = record {text; Doctor};
 type Doctor = record {
   doctor_name: text;
   doctor_department: text;
-  dates: vec text;
+  dates: vec record {text; vec text};
 };
-type Dates = record {text; vec text};
-
 
 type Session = record {
   user_id: text;
@@ -86,53 +83,27 @@ type Medication = record {
 
 
 service : {
-  // auth functions
-  sign_up : (text, text) -> (variant { Ok : null; Err : text });
-  login : (text, text) -> (variant { Ok : null; Err : text });
-  logout : () -> ();
-  
-  // administration functions
-  is_logged_in : (text) -> (bool);
+
+// user man
+  create_user: (identity: text) -> (variant {Ok: null; Err: text});
+  get_current_user : (identity: text) -> (opt text);
   list_active_sessions: () -> (vec text);
-  list_signed_users: () -> (vec text);
-  set_provider: (text) -> (variant {Ok: null; Err: text});
-  list_providers: () -> (vec Provider);
-  is_provider: () -> (bool);
-  remove_provider: (text) -> (variant {Ok: null; Err: text});
 
 // doctor man
-  add_doctor: (text, text, text, text) -> (variant {Ok: null; Err: text});
-  list_doctors: (text, text) -> (vec Doctor);
-  // user functions
-  make_appointment: (text, text, text, text, text) -> (variant {Ok: null; Err: text});
-  list_appointments : (text) -> (vec vec text);
-  edit_user_personal_data : (user_id: text, name: text, surname: text, location: text, age: text, height: text, weight: text) -> (variant {Ok: null; Err: text});
-
-  // provider functions
-  // listing
-  list_departments : (provider_id: text) -> (variant{Ok: vec Department; Err: text});
-  list_dates: (provider_id: text, department_name: text, doctors_name: text) -> (vec text);
-  list_times: (provider_id: text, department_name: text, doctors_name: text, selected_date: text) -> (vec text);
-  get_provider_info: (provider_id: text) -> (opt text); 
-  get_patient_info: (provider_id: text) -> (opt text); 
-  edit_provider_info: (provider_id: text, provider_name: text, provider_location: text) -> (variant {Ok: null; Err: text});
+  add_doctor: (provider_id: text, doctor_id: text, new_doctor_name: text, new_doctor_department: text) -> (variant {Ok: null; Err: text});
+  list_doctors: (provider_id: text) -> (vec Doctor);
+// department man
+  add_department : (provider_id: text, new_department_name: text) -> (variant {Ok: null; Err: text});
+  list_departments : (provider_id: text) -> (vec Department);
 
 
-  create_user: (identity: text) -> (variant {Ok: null; Err: text});
-
-  // adding
-  add_department : (provider_id: text, department_name: text) -> (variant {Ok: null; Err: text});
-  add_date : (provider_id: text, department_name: text, doctor_name: text, date: text) -> (variant {Ok: null; Err: text});
-  add_time : (provider_id: text, department_name: text, doctor_name: text, date: text, time: text) -> (variant {Ok: null; Err: text});
-  add_disease : (user_id: text, disease_name: text) -> (variant {Ok: null; Err: text});
-  add_allergy : (user_id: text, allergy_name: text) -> (variant {Ok: null; Err: text});
-  
-  // func_medications
+// medications man
   add_medication : (user_id: text, prescription_date: text, barcode: text, prescription_number: text, medicine_name: text, dosage: text, period: text, usage_method: text, usage_count: text, box_count: text, provider_name: text, doctor_name: text, box_image: vec nat8, prospectus_pdf: vec nat8) -> (variant {Ok: null; Err: text});
   list_medications : (user_id: text) -> (variant {Ok: vec Medication; Err: text});
 
   create_provider_request : (user_id: text, provider_name: text) -> (variant {Ok: null; Err: text});
   list_provider_requests : () -> (vec ProviderRequest);
   update_provider_request : (user_id: text, new_request_status: nat8) -> (variant {Ok: null; Err: text});
-  get_current_user : (identity: text) -> (opt text);
+  list_providers: () -> (vec Provider);
+
 };

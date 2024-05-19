@@ -8,7 +8,7 @@ fn add_medication(user_id: String, barcode: String, prescription_date: String, p
         let mut users = users.borrow_mut();
         if let Some(user) = users.get_mut(&Principal::from_text(&user_id).expect("User not found.")) {
             let medication = Medication {
-                prescription_date: prescription_date, // Change this to actual prescription date
+                prescription_date: prescription_date,
                 barcode,
                 prescription_number: prescription_number.clone(),
                 medicine_name,

@@ -16,22 +16,31 @@ function ManageDepartments() {
   });
 
   useEffect(() => {
+    listProviders();
     listDepartments();
   }, []);
-
-  async function listProviders() {
-    console.log("Listing providers");
-    console.log(await DMS_backend.list_providers());
-  }
 
   async function listDepartments() {
     setLoading(true); // Set loading to true when fetching data
     console.log("Listing departments");
     try {
       const departments = await DMS_backend.list_departments(principal);
-      setDepartmentsList(departments.Ok);
+      console.log(departments)
+      setDepartmentsList(departments);
     } catch (error) {
       console.error("Failed to fetch departments:", error);
+    } finally {
+      setLoading(false); // Set loading to false when data fetching is done
+    }
+  }
+
+  async function listProviders() {
+    console.log("Listing providers");
+    try {
+      const providers = await DMS_backend.list_providers();
+      console.log(providers);
+    } catch (error) {
+      console.log("Failed to fetch providers", error);
     } finally {
       setLoading(false); // Set loading to false when data fetching is done
     }

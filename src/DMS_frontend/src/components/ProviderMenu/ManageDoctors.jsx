@@ -16,6 +16,7 @@ function ManageDoctors() {
   });
 
   useEffect(() => {
+    listProviders();
     listDoctors();
   }, []);
 
@@ -28,7 +29,8 @@ function ManageDoctors() {
     setLoading(true); // Set loading to true when fetching data
     console.log("Listing doctors");
     try {
-      const doctors = await DMS_backend.list_doctors(principal, "a");
+      const doctors = await DMS_backend.list_doctors(principal);
+      console.log(doctors);
       setDoctorsList(doctors);
     } catch (error) {
       console.error("Failed to fetch doctors:", error);
@@ -60,7 +62,7 @@ function ManageDoctors() {
   ]
 
   const handleApplyClick = async (values) => {
-    console.log(await DMS_backend.add_doctor(principal, values.user_id,  values.doctor_name, values.department_name));
+    console.log(await DMS_backend.add_doctor(principal, values.user_id,  values.doctor_name, values.doctor_department));
     setModal2Open(false);
     listDoctors();
   };
@@ -113,7 +115,7 @@ function ManageDoctors() {
             <Input placeholder="Enter doctors name." prefix={<UserOutlined />} />
           </Form.Item>
           <Form.Item
-            name="department_name"
+            name="doctor_department"
             rules={[
               {
                 required: true,
