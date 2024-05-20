@@ -23,6 +23,7 @@ import Appointments from '../UserMenu/Appointment/Appointments';
 import ProviderRequests from '../UserMenu/ProviderRequests/ProviderRequests';
 import UserProfile from '../Profile/UserProfile';
 import Visits from '../UserMenu/Visits/Visits';
+import ManageAppointments from '../DoctorMenu/ManageAppointments';
 import MainContent from './MainContent/MainContent';
 import ManageDepartments from '../ProviderMenu/ManageDepartments/ManageDepartments';
 import ManageDoctors from '../ProviderMenu/ManageDoctors';
@@ -38,6 +39,7 @@ function MainPage() {
     const [collapsed, setCollapsed] = useState(false);
     const [user, setUser] = useState({});
     const [isProvider, setIsProvider] = useState(false);
+    const [isDoctor, setIsDoctor] = useState(false);
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
     const onChange = (key) => { };
     const [selectedPage, setSelectedPage] = useState(1);
@@ -93,7 +95,7 @@ function MainPage() {
 
     const doctorMenuItems = [
         { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
-        { key: '2', icon: <UserOutlined />, label: 'Manage Appointments', pagenumber: 2 },
+        { key: '2', icon: <UserOutlined />, label: 'Manage Appointments', pagenumber: 2, component: <ManageAppointments/>},
         { key: '3', icon: <UserOutlined />, label: 'Patient Management', pagenumber: 3 },
         { key: '4', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 4, component: <ProviderRequests /> },
     ];

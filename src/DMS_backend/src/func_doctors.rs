@@ -18,7 +18,7 @@ fn add_doctor(provider_id: String, doctor_id: String, new_doctor_name: String, n
                             let new_doctor = Doctor {
                             doctor_name: new_doctor_name.clone(),
                             doctor_department: new_doctor_department.clone(),
-                            dates: HashMap::new(),
+                            schedule: HashMap::new(),
                             };
                             current_department.doctors.insert(doctor_id.clone(), new_doctor);
                             user.user_type = 2;

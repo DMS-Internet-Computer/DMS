@@ -1,7 +1,6 @@
 
 mod func_user;
 mod func_provider;
-
 mod func_medications;
 mod func_departments;
 mod func_doctors;
@@ -70,10 +69,11 @@ struct Session {
 type Appointments = HashMap<Principal, Vec<AppointmentDetails>>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct AppointmentDetails {
-    pub department: String,
-    pub doctor: String,
-    pub date: String,
-    pub time: String,
+    pub appointment_provider: String,
+    pub appointment_department: String,
+    pub appointment_doctor: String,
+    pub appointment_date: String,
+    pub appointment_time: String,
 }
 
 type Providers = HashMap<Principal, Provider>;
@@ -96,9 +96,17 @@ type Doctors = HashMap<String, Doctor>;
 struct Doctor {
     pub doctor_name: String,
     pub doctor_department: String,
-    pub dates: Dates,
+    pub schedule: DoctorSchedule,
 }
-type Dates = HashMap<String, Vec<String>>;
+
+type DoctorSchedule = HashMap<String, Vec<DoctorAppointment>>;
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct DoctorAppointment {
+    pub patient_id: String,
+    pub doctor_appointment_date: String,
+    pub doctor_appointment_time: String,
+    pub doctor_appointment_status: u8 // 0: Pending, 1: Finished, 2: Cancelled
+}
 
 type ProviderRequests = HashMap<String, ProviderRequest>;
 #[derive(Clone, Debug, CandidType, Serialize)]

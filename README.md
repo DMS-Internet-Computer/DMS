@@ -1,61 +1,69 @@
-# DMS
+# DMS Showcase - Connecting Healthcare Service Providers and Patients Worldwide on ICP
+DMS (Decentralized Medical Services), an e-Healthcare Management platform built on the Internet Computer. 
 
-Welcome to your new DMS project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+## Introduction
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+DMS is an innovative e-Health Management Platform established on the Internet Computer (ICP). It aims to revolutionize healthcare service delivery by connecting healthcare service providers and patients globally through a unified platform. 
 
-To learn more before you start working with DMS, see the following documentation available online:
+## Project Overview
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Rust Canister Development Guide](https://internetcomputer.org/docs/current/developer-docs/backend/rust/)
-- [ic-cdk](https://docs.rs/ic-cdk)
-- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
-- [Candid Introduction](https://internetcomputer.org/docs/current/developer-docs/backend/candid/)
+DMS addresses the limitations of traditional healthcare service delivery methods by offering a comprehensive platform accessible to both healthcare providers and patients worldwide. By leveraging the power of the Internet Computer, DMS provides a seamless experience for scheduling appointments, managing health profiles, and accessing healthcare services remotely.
 
-If you want to start working on your project right away, you might want to try the following commands:
+## Features
 
-```bash
-cd DMS/
-dfx help
-dfx canister --help
-```
+### For Patients
 
-## Running the project locally
+- Schedule and manage local hospital appointments through DMS.
+- Access appointment details and track health profiles.
+- Share post-appointment processes with healthcare providers worldwide.
+- Access the best providers and doctor services globally.
 
-If you want to test your project locally, you can use the following commands:
+### For Providers
 
-```bash
-# Starts the replica, running in the background
-dfx start --background
+- Complete hospital management system.
+- Department settings, doctor assignments, and appointment tracking.
+- Serve patients worldwide through remote consultations.
 
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
-```
+### For Doctors
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
+- Detailed patient profiles and consultation services.
+- Quick access to patient data and streamlined healthcare services.
+- Utilization of 3D Web technology for enhanced functionalities.
 
-If you have made changes to your backend canister, you can generate a new candid interface with
+## Current Functionalities
 
-```bash
-npm run generate
-```
+- User Profile Management
+- Appointment Scheduling and Management
+- Health Profile Tracking
+- Department and Doctor Management for Providers
+- Appointment Management for Doctors
+- Patient Management for Doctors
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+## Under Development
 
-If you are making frontend changes, you can start a development server with
+- Provider Requests and Approvals
+- Provider and Doctor Profile Management
+- Evaluation System for Providers and Doctors
+- 3D Visualization of Patient Health Data
+- Location-Based Provider Filtering
+- Payment System Integration
+- User-Controlled Health Profile Sharing
 
-```bash
-npm start
-```
+## How to Contribute
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+We welcome contributions from developers, healthcare professionals, and enthusiasts. If you're interested in contributing to the DMS project, please reach out to us at [contact.dms.app@gmail.com](mailto:contact.dms.app@gmail.com).
 
-### Note on frontend environment variables
+## Feedback and Suggestions
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+Your feedback is crucial for the development of DMS. If you have any suggestions, feature requests, or bug reports, please submit them to our [issue tracker](https://github.com/DMS-Internet-Computer/DMS/issues).
 
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+## License
+
+DMS is licensed under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+DMS is made possible by the contributions of our team members and the support of the ICP.HUB Turkey community. We extend our gratitude to everyone involved in making this project a reality.
+
+![DMS Logo](https://example.com/dms-logo.png)
+![ICP.HUB Turkey Logo](https://example.com/icp-hub-logo.png)
