@@ -1,5 +1,5 @@
 # DMS  - Connecting Healthcare Service Providers and Patients Worldwide on ICP
-![DMS Logo]([(https://github.com/DMS-Internet-Computer/DMS/blob/main/DMS-LOGO.png)])
+![DMS Logo]([https://github.com/DMS-Internet-Computer/DMS/blob/main/DMS-LOGO.png])
 ## Introduction
 
 DMS is an e-Healthcare Management Platform established on the Internet Computer (ICP). DMS aims to improve healthcare service delivery by connecting healthcare service providers and patients globally through a unified platform. 
