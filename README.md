@@ -36,7 +36,6 @@ This way, we are enhancing the service network of healthcare providers and visit
 ## Current Functionalities
 
 - User Profile Management
-
 - Appointment Scheduling and Management
 - Health Profile Tracking
 - Department and Doctor Management for Providers
