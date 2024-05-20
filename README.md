@@ -1,13 +1,15 @@
-# DMS Showcase - Connecting Healthcare Service Providers and Patients Worldwide on ICP
-DMS (Decentralized Medical Services), an e-Healthcare Management platform built on the Internet Computer. 
+# DMS  - Connecting Healthcare Service Providers and Patients Worldwide on ICP
 
 ## Introduction
 
-DMS is an innovative e-Health Management Platform established on the Internet Computer (ICP). It aims to revolutionize healthcare service delivery by connecting healthcare service providers and patients globally through a unified platform. 
+DMS is an innovative e-Healthcare platform established on the Internet Computer (ICP). It aims to revolutionize healthcare service delivery by connecting healthcare service providers and patients globally through a unified platform. 
 
-## Project Overview
+## Project Aim
 
-DMS addresses the limitations of traditional healthcare service delivery methods by offering a comprehensive platform accessible to both healthcare providers and patients worldwide. By leveraging the power of the Internet Computer, DMS provides a seamless experience for scheduling appointments, managing health profiles, and accessing healthcare services remotely.
+Today's healthcare service providers deliver their services using their own corporate web services. 
+This corporate approach restricts both the healthcare service providers and patients in their service exchange network.
+DMS aims to bring healthcare service providers and visitors together on a single platform that is more functional, meeting all their needs beyond their current systems. 
+This way, we are enhancing the service network of healthcare providers and visitors on a global scale.
 
 ## Features
 
