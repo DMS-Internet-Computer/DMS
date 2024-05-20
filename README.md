@@ -43,7 +43,7 @@ This way, we are enhancing the service network of healthcare providers and visit
 - Appointment Management for Doctors
 - Patient Management for Doctors
 - Provider Requests and Approvals
-- 
+  
 ## Under Development
 
 - Provider and Doctor Profile Management
