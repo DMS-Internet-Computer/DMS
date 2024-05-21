@@ -41,6 +41,7 @@ struct PersonalData {
     pub province: String,
     pub mail: String,
     pub phone: String,
+    pub picture: Vec<u8>,
 }
 type Medications = HashMap<String, Medication>;
 #[derive(Clone, Debug, CandidType, Serialize)]
@@ -94,6 +95,7 @@ struct Department {
 type Doctors = HashMap<String, Doctor>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Doctor {
+    pub doctor_provider: String,
     pub doctor_name: String,
     pub doctor_department: String,
     pub schedule: DoctorSchedule,

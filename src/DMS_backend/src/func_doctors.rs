@@ -10,12 +10,15 @@ fn add_doctor(provider_id: String, doctor_id: String, new_doctor_name: String, n
         if let Some(mut user) = mut_user.get_mut(&Principal::from_text(&doctor_id.clone()).expect("Doctor user not exist."))
         {
             PROVIDERS.with(
-                |provider| {
+                |provider| 
+                {
                     let mut mut_provider = provider.borrow_mut();
-                    if let Some(mut current_provider) = mut_provider.get_mut(&Principal::from_text(&provider_id.clone()).expect("Provider not found")){
+                    if let Some(mut current_provider) = mut_provider.get_mut(&Principal::from_text(&provider_id.clone()).expect("Provider not found"))
+                    {
                         if let Some(mut current_department) = current_provider.departments.get_mut(&new_doctor_department.clone())
                         {
                             let new_doctor = Doctor {
+                            doctor_provider: provider_id.clone(),
                             doctor_name: new_doctor_name.clone(),
                             doctor_department: new_doctor_department.clone(),
                             schedule: HashMap::new(),

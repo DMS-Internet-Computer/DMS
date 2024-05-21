@@ -170,7 +170,7 @@ function Medications() {
 
   const fetchMedications = async () => {
     try {
-      const user_id = "2vxsx-fae"; // Replace with actual user ID
+      const user_id = "2vxsx-fae";
       const medications = await DMS_backend.list_medications(principal);
       setMedications(medications);
       console.log(medications);
@@ -439,9 +439,7 @@ function Medications() {
             <Button icon={<PlusOutlined />}>Select PDF File</Button>
           </Upload>
         </Form.Item>
-
         <Button type="primary" htmlType="submit">Add Medication</Button>
-
       </Form>
     </>
   )

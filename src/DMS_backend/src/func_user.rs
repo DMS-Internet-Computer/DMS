@@ -33,6 +33,7 @@ fn create_user(identity: String) -> Result<(), String> {
                     province: "".to_string(),
                     mail: "".to_string(),
                     phone: "".to_string(),
+                    picture: Vec::new(),
                 },
                 provider_requests: HashMap::new(),
                 user_type: 0,
@@ -55,7 +56,6 @@ fn get_current_user(identity: String) -> Option<String> {
     USERS.with(|users| {
         let users = users.borrow();
         if let Some(user) = users.get(&Principal::from_text(identity).expect("User not found")) {
-            // Converts user data to JSON object
             let user_json = serde_json::json!({
                 "identity": user.identity,
                 "appointments": user.appointments,
@@ -70,6 +70,61 @@ fn get_current_user(identity: String) -> Option<String> {
         }
     })
 }
+
+
+#[update]
+fn update_user_profile(
+    identity: String,
+    name: String,
+    surname: String,
+    birthday: String,
+    country: String,
+    city: String,
+    province: String,
+    mail: String,
+    phone: String,
+    height: String,
+    weight: String,
+    blood_type: String,
+) -> Result<(), String> {
+    USERS.with(|users| {
+        let mut mut_users = users.borrow_mut();
+        if let Some(user) = mut_users.get_mut(&Principal::from_text(&identity).expect("User not found")) {
+            user.personal_data.name = name;
+            user.personal_data.surname = surname;
+            user.personal_data.birthday = birthday;
+            user.personal_data.country = country;
+            user.personal_data.city = city;
+            user.personal_data.province = province;
+            user.personal_data.mail = mail;
+            user.personal_data.phone = phone;
+            user.health_data.height = height;
+            user.health_data.weight = weight;
+            user.health_data.blood_type = blood_type;
+            Ok(())
+        } else {
+            Err("update failed.".to_string())
+        }
+    })
+}
+
+#[update]
+fn update_user_picture(
+    identity: String, 
+    picture: Vec<u8>
+) -> Result<(), String> 
+{
+    USERS.with(|users| {
+        let mut mut_users = users.borrow_mut();
+        if let Some(user) = mut_users.get_mut(&Principal::from_text(&identity).expect("User not found")) {
+            user.personal_data.picture = picture;
+            Ok(())
+        } else {
+            Err("update failed.".to_string())
+        }
+    })
+}
+
 
 #[query]
 fn list_active_sessions() -> Vec<String> {

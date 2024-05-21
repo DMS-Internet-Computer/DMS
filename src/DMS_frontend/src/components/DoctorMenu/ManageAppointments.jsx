@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, DatePicker, Select, Button, notification } from 'antd';
 import { DMS_backend } from 'declarations/DMS_backend';
+import { useConnect } from "@connect2ic/react"
 
 const { Option } = Select;
 
@@ -12,10 +13,26 @@ function ManageAppointments() {
     const [selectedDepartment, setSelectedDepartment] = useState(null);
     const [departments, setDepartments] = useState([]);
     const [doctors, setDoctors] = useState([]);
-
+    const { principal, isConnected } = useConnect({
+        onConnect: () => { },
+        onDisconnect: () => { }
+    });
+    
     useEffect(() => {
-        listProviders();
+        get_user_data(principal);
     }, []);
+
+    const get_user_data = async (identity) => {
+        const userData = await DMS_backend.get_current_user(identity);
+        console.log(identity);
+        console.log("userData:", JSON.parse(userData)); // Log userData to check its value
+        try {
+            return JSON.parse(userData);
+        } catch (error) {
+            console.error("Error parsing user data:", error);
+            return null; // Return null or handle the error in a different way
+        }
+    };
 
     const listProviders = async () => {
         try {
@@ -27,36 +44,6 @@ function ManageAppointments() {
             notification.error({
                 message: 'Hata',
                 description: 'Sağlayıcıları listelerken bir hata oluştu. Lütfen tekrar deneyin.',
-            });
-        }
-    };
-
-    const onSelectProvider = async (providerId) => {
-        setSelectedProvider(providerId);
-        try {
-            const departments = await DMS_backend.list_departments(providerId);
-            console.log(departments);
-            setDepartments(departments);
-        } catch (error) {
-            console.error('Error listing departments:', error);
-            notification.error({
-                message: 'Hata',
-                description: 'Departmanları listelerken bir hata oluştu. Lütfen tekrar deneyin.',
-            });
-        }
-    };
-
-    const onSelectDepartment = async (departmentName) => {
-        setSelectedDepartment(departmentName);
-        try {
-            const doctors = await DMS_backend.list_doctors(selectedProvider, departmentName);
-            console.log(doctors);
-            setDoctors(doctors);
-        } catch (error) {
-            console.error('Error listing doctors:', error);
-            notification.error({
-                message: 'Hata',
-                description: 'Doktorları listelerken bir hata oluştu. Lütfen tekrar deneyin.',
             });
         }
     };
@@ -95,55 +82,6 @@ function ManageAppointments() {
                 layout="vertical"
                 onFinish={onFinish}
             >
-                <Form.Item
-                    name="provider"
-                    label="Sağlayıcı"
-                    rules={[{ required: true, message: 'Lütfen sağlayıcıyı seçin.' }]}
-                >
-                    <Select
-                        placeholder="Lütfen Sağlayıcı Seçin"
-                        onChange={onSelectProvider}
-                    >
-                        {providers.map(provider => (
-                            <Option key={provider.provider_id} value={provider.provider_id}>
-                                {provider.provider_name}
-                            </Option>
-                        ))}
-                    </Select>
-                </Form.Item>
-                <Form.Item
-                    name="department"
-                    label="Departman"
-                    rules={[{ required: true, message: 'Lütfen departmanı seçin.' }]}
-                >
-                    <Select
-                        placeholder="Lütfen Departman Seçin"
-                        onChange={onSelectDepartment}
-                        disabled={!selectedProvider}
-                    >
-                        {departments.map(department => (
-                            <Option key={department.department_name} value={department.department_name}>
-                                {department.department_name}
-                            </Option>
-                        ))}
-                    </Select>
-                </Form.Item>
-                <Form.Item
-                    name="doctor"
-                    label="Doktor"
-                    rules={[{ required: true, message: 'Lütfen doktoru seçin.' }]}
-                >
-                    <Select
-                        placeholder="Lütfen Doktor Seçin"
-                        disabled={!selectedProvider || !selectedDepartment}
-                    >
-                        {doctors.map(doctor => (
-                            <Option key={doctor.doctor_id} value={doctor.doctor_id}>
-                                {doctor.doctor_name}
-                            </Option>
-                        ))}
-                    </Select>
-                </Form.Item>
                 <Form.Item
                     name="appointmentDate"
                     label="Randevu Tarihi"

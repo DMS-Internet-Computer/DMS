@@ -1,15 +1,23 @@
-import { ConnectButton, ConnectDialog, useConnect } from "@connect2ic/react"
-import { Divider, Spin, Modal, Form, Input, Space, Tabs, Card, Button, Layout, Menu, theme, Table, Rate, Calendar } from 'antd';
+import { ConnectButton, ConnectDialog, useConnect } from "@connect2ic/react";
+import { useState } from 'react';
+import { Card } from 'antd';
+import './LoginPage.css'; // Özel CSS dosyası
 
 function LoginPage() {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <Card>
-        <ConnectButton />
+ // Yazılacak metin
+
+  return (
+    <div className="login-page-container">
+      <div className="background-overlay"></div>
+      <Card className="login-card">
+        <div className="logo-container">
+          <img src="DMS-LOGO.png" alt="Logo" className="login-logo" />
+          <ConnectButton style={{borderRadius: '11px', backgroundColor: 'white', color: 'red', border: '2px solid red', fontWeight: 'bold'}}/>
+        </div>
         <ConnectDialog />
       </Card>
     </div>
-    );
-  }
+  );
+}
 
-  export default LoginPage;
+export default LoginPage;

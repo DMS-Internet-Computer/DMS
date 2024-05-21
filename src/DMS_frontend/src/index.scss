@@ -1,9 +1,12 @@
+head, html, main{
+  background-color: none;
+}
+
 body {
   font-family: sans-serif;
   font-size: 1.5rem;
   height: 100vh;
 }
-
 
 .login-page{
   display: flex;
@@ -108,3 +111,4 @@ body {
 .profile-section .ant-list-item-meta-description a:hover {
   text-decoration: underline;
 }
+

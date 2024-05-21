@@ -86,6 +86,8 @@ function MainPage() {
             return null; // Return null or handle the error in a different way
         }
     };
+
+    
     const providerMenuItems = [
         { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
         { key: '2', icon: <UserOutlined />, label: 'Manage Departments', pagenumber: 2, component: <ManageDepartments /> },

@@ -33,6 +33,7 @@ type PersonalData = record {
     province: text;
     mail: text;
     phone: text;
+    picture: vec nat8;
 };
 
 type User = record {
@@ -55,12 +56,13 @@ type Provider = record {
   departments: vec record {text; Department};
 };
 
-
 type Doctor = record {
+  doctor_provider: text;
   doctor_name: text;
   doctor_department: text;
   schedule: DoctorSchedule;
 };
+
 type DoctorSchedule = vec record {text; vec DoctorAppointment};
 type DoctorAppointment = record {
   patient_id: text;
@@ -97,6 +99,27 @@ service : {
   create_user: (identity: text) -> (variant {Ok: null; Err: text});
   get_current_user : (identity: text) -> (opt text);
   list_active_sessions: () -> (vec text);
+
+// user profile man
+update_user_profile: (
+    identity: text,
+    name: text,
+    surname: text,
+    birthday: text,
+    country: text,
+    city: text,
+    province: text,
+    mail: text,
+    phone: text,
+    height: text,
+    weight: text,
+    blood_type: text,
+) -> (variant {Ok: null; Err: text});
+
+update_user_picture: (
+  identity: text,
+  picture: vec nat8,
+) -> (variant {Ok: null; Err: text});
 
 // doctor man
   add_doctor: (provider_id: text, doctor_id: text, new_doctor_name: text, new_doctor_department: text) -> (variant {Ok: null; Err: text});
