@@ -1,8 +1,26 @@
-import { Dropdown, Table, Button, Modal, Image} from "antd";
-import { useState } from "react";
-import { DownOutlined, PictureOutlined, FilePptOutlined} from '@ant-design/icons';
-
-function Diseases(){
+import React, { useState, Suspense } from 'react';
+import { Dropdown, Table, Button, Modal, Image } from "antd";
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Stage } from '@react-three/drei';
+import ThreeDModel from './ThreeDModel';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UploadOutlined,
+  UserOutlined,
+  CalendarOutlined,
+  CarryOutOutlined,
+  ExperimentOutlined,
+  PaperClipOutlined,
+  PicLeftOutlined,
+  FileTextOutlined,
+  MedicineBoxOutlined,
+  DislikeOutlined,
+  BorderlessTableOutlined,
+  PictureOutlined,
+  FilePptOutlined,
+} from '@ant-design/icons';
+function Diseases() {
   const [modalOpen, setModalOpen] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -22,12 +40,8 @@ function Diseases(){
       key: '2',
       icon: <FilePptOutlined />,
       onClick: () => window.open(prospectusUrl),
-    },
+    }
   ];
-
-  const menuProps = {
-    items,
-  };
 
   const diseasesMockData = [
     {
@@ -39,42 +53,42 @@ function Diseases(){
       doctor: 'Doctor A',
       details: 'Details'
     }
-  ]
+  ];
 
   const diseasesColumns = [
-      {
-        title: 'Diagnosis Date',
-        dataIndex: 'date',
-        key: 'date',
-      },
-      {
-        title: 'Diagnosis',
-        dataIndex: 'diagnosis',
-        key: 'diagnosis',
-      },
-      {
-        title: 'Provider',
-        dataIndex: 'provider',
-        key: 'provider',
-      },
-      {
-        title: 'Department',
-        dataIndex: 'department',
-        key: 'department',
-      },
-      {
-        title: 'Doctor',
-        dataIndex: 'doctor',
-        key: 'doctor',
-      },
-      {
-        title: 'Details',
-        dataIndex: 'details',
-        render: () => <Button type="primary" onClick={() => setModalOpen(true)}>
+    {
+      title: 'Diagnosis Date',
+      dataIndex: 'date',
+      key: 'date',
+    },
+    {
+      title: 'Diagnosis',
+      dataIndex: 'diagnosis',
+      key: 'diagnosis',
+    },
+    {
+      title: 'Provider',
+      dataIndex: 'provider',
+      key: 'provider',
+    },
+    {
+      title: 'Department',
+      dataIndex: 'department',
+      key: 'department',
+    },
+    {
+      title: 'Doctor',
+      dataIndex: 'doctor',
+      key: 'doctor',
+    },
+    {
+      title: 'Details',
+      dataIndex: 'details',
+      render: () => <Button type="primary" onClick={() => setModalOpen(true)}>
         Show
       </Button>,
-      }
-  ]
+    }
+  ];
 
   const diseasesDetailsMockData = [
     {
@@ -84,7 +98,7 @@ function Diseases(){
       doctor: 'Doctor A',
       date: '12.01.2024 15.00',
     }
-  ]
+  ];
 
   const diseasesDetailsColumns = [
     {
@@ -107,12 +121,12 @@ function Diseases(){
       dataIndex: 'date',
       key: 'date',
     }
-]
+  ];
 
-    return(
-      <>
-        <Table size="small" dataSource={diseasesMockData} columns={diseasesColumns}/>
-        <Modal
+  return (
+    <>
+      <Table size="small" dataSource={diseasesMockData} columns={diseasesColumns} />
+      <Modal
         title="Diagnosis Details"
         centered
         width={1100}
@@ -120,15 +134,15 @@ function Diseases(){
         footer={null}
         onOk={() => setModalOpen(false)}
         onCancel={() => setModalOpen(false)}
-        >
-        <Table size="small" dataSource={diseasesDetailsMockData} columns={diseasesDetailsColumns}/>
-        </Modal>
-        <Image
+      >
+        <Table size="small" dataSource={diseasesDetailsMockData} columns={diseasesDetailsColumns} />
+      </Modal>
+      <Image
         width={200}
         style={{
           display: 'none',
         }}
-        src= {boxImgUrl}
+        src={boxImgUrl}
         preview={{
           visible,
           scaleStep,
@@ -138,8 +152,18 @@ function Diseases(){
           },
         }}
       />
-      </>
-    )
-  }
+      <div style={{ width: '100%', height: '500px', marginTop: '20px' }}>
+        <Canvas>
+          <Suspense fallback={null}>
+            <Stage>
+              <ThreeDModel />
+            </Stage>
+          </Suspense>
+          <OrbitControls />
+        </Canvas>
+      </div>
+    </>
+  );
+}
 
-  export default Diseases;
+export default Diseases;

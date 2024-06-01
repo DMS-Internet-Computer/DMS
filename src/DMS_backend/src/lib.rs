@@ -81,6 +81,7 @@ struct AppointmentDetails {
     pub appointment_doctor: String,
     pub appointment_date: String,
     pub appointment_time: String,
+    pub appointment_status: u8 // 0: Pending, 1: Finished, 2: Cancelled
 }
 
 type Providers = HashMap<Principal, Provider>;
@@ -114,7 +115,7 @@ struct DoctorAppointment {
     pub patient_id: String,
     pub doctor_appointment_date: String,
     pub doctor_appointment_time: String,
-    pub doctor_appointment_status: u8 // 0: Pending, 1: Finished, 2: Cancelled
+    pub doctor_appointment_status: u8 // 0: Pending, 1: Scheduled, 2: Finished, 2: Cancelled
 }
 
 type ProviderRequests = HashMap<String, ProviderRequest>;

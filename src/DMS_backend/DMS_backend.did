@@ -6,6 +6,7 @@ type AppointmentDetails = record {
     appointment_doctor: text;
     appointment_date: text;
     appointment_time: text;
+    appointment_status: nat8;
 };
 type Appointments = record {Principal; vec AppointmentDetails};
 
@@ -138,7 +139,7 @@ update_user_picture: (
   list_appointments: (provider_id: text, department_name: text, doctor_id: text) -> (vec DoctorAppointment);
 // schedule man
   schedule_appointment: (provider_id: text, department_name: text, doctor_id: text, appointment_date: text, appointment_time: text, patient_id: text) -> (variant {Ok: null; Err: text});
-
+  list_user_appointments: (user_id: text) -> (vec AppointmentDetails);
 // medications man
   add_medication : (user_id: text, prescription_date: text, barcode: text, prescription_number: text, medicine_name: text, dosage: text, period: text, usage_method: text, usage_count: text, box_count: text, provider_name: text, doctor_name: text, box_image: vec nat8, prospectus_pdf: vec nat8) -> (variant {Ok: null; Err: text});
   list_medications : (user_id: text) -> (variant {Ok: vec Medication; Err: text});

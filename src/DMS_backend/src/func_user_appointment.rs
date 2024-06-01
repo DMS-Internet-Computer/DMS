@@ -10,7 +10,7 @@ fn schedule_appointment(
     doctor_id: String, 
     appointment_date: String, 
     appointment_time: String, 
-    patient_id: String // Kullanıcı kimliği
+    patient_id: String
 ) -> Result<(), String> {
     PROVIDERS.with(|provider| {
         let mut mut_provider = provider.borrow_mut();
@@ -34,8 +34,9 @@ fn schedule_appointment(
                                             appointment_doctor: doctor_id.clone(),
                                             appointment_date: appointment_date.clone(),
                                             appointment_time: appointment_time.clone(),
+                                            appointment_status: 0,
                                         };
-                                        user.appointments.entry(Principal::from_text(&patient_id.clone()).expect("Failed.")).or_insert(vec![]).push(new_appointment);
+                                        user.appointments.entry(Principal::from_text(&provider_id.clone()).expect("Failed.")).or_insert(vec![]).push(new_appointment);
                                         Ok(())
                                     } else {
                                         Err("User not found.".to_string())
@@ -55,6 +56,24 @@ fn schedule_appointment(
             }
         } else {
             Err("Provider not found.".to_string())
+        }
+    })
+}
+
+#[query]
+fn list_user_appointments(user_id: String) -> Vec<AppointmentDetails> {
+    USERS.with(|users| {
+        let mock_user = users.borrow();
+        if let Some(current_user) = mock_user.get(&Principal::from_text(&user_id.clone()).expect("User not found.")) {
+            let mut appointments = Vec::new();
+            for appointment_list in current_user.appointments.values() {
+                for appointment in appointment_list {
+                    appointments.push(appointment.clone());
+                }
+            }
+            appointments
+        } else {
+            Vec::new()
         }
     })
 }

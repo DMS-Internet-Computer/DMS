@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Row, Col, DatePicker, TimePicker, Button, message, Table } from 'antd';
+import React, { useEffect, useState, Suspense } from 'react'; // Import Suspense
+import { Card, Row, Col, DatePicker, TimePicker, Button, message, Table, Tooltip, Modal } from 'antd';
 import { DMS_backend } from 'declarations/DMS_backend';
 import { useConnect } from "@connect2ic/react";
+import { UserOutlined } from '@ant-design/icons';
 import moment from 'moment';
-
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Stage } from '@react-three/drei';
+import ThreeDModel from './ThreeDModel'; // Import the 3D model component
+import PatientModal from './PatientModal';
 function ManageAppointments() {
     const [doc, setDoc] = useState(null);
     const [appointmentDate, setAppointmentDate] = useState(null);
     const [appointmentTime, setAppointmentTime] = useState(null);
     const [appointments, setAppointments] = useState([]);
+    const [selectedPatient, setSelectedPatient] = useState(null);
 
     const { principal, isConnected } = useConnect({
         onConnect: () => { },
@@ -65,6 +70,14 @@ function ManageAppointments() {
         }
     };
 
+    const handlePatientClick = (patientId) => {
+        setSelectedPatient(patientId);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedPatient(null);
+    };
+
     const columns = [
         {
             title: 'Date',
@@ -86,6 +99,14 @@ function ManageAppointments() {
             title: 'Patient ID',
             dataIndex: 'patient_id',
             key: 'patient_id',
+            render: (patientId) => (
+                <Tooltip title={patientId} placement="right">
+                    <span onClick={() => handlePatientClick(patientId)}>
+                        <UserOutlined style={{ marginRight: 4 }} />
+                        {patientId.substring(0, 4)}
+                    </span>
+                </Tooltip>
+            )
         }
     ];
 
@@ -105,6 +126,37 @@ function ManageAppointments() {
                     <Table dataSource={appointments} columns={columns} rowKey={(record) => record.doctor_appointment_date + record.doctor_appointment_time} />
                 </Card>
             </Col>
+            <Modal
+                title="Patient Details"
+                visible={selectedPatient !== null}
+                onCancel={handleCloseModal}
+                footer={null}
+                centered // Center the modal
+                width={1600} // Set a decent width
+            >
+                {/* Render patient details here */}
+                {selectedPatient && <p>Patient ID: {selectedPatient}</p>}
+                <Row gutter={24}>
+                    <Col span={12}>
+                        <Card>
+                            <div style={{ width: '100%', height: '500px', marginTop: '20px' }}>
+                            <Canvas>
+                                <Suspense fallback={null}>
+                                    <Stage>
+                                        <ThreeDModel />
+                                    </Stage>
+                                </Suspense>
+                                <OrbitControls />
+                            </Canvas>
+                            </div>
+                        </Card>
+
+                    </Col>
+                    <Col span={12}>
+                        <PatientModal />
+                    </Col>
+                </Row>
+            </Modal>
         </Row>
     );
 }
