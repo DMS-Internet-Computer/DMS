@@ -36,8 +36,9 @@ fn create_user(identity: String) -> Result<(), String> {
                     picture: Vec::new(),
                 },
                 provider_requests: HashMap::new(),
+                user_owner: "".to_string(),
+                user_owner_department: "".to_string(),
                 user_type: 0,
-                
             };
 
             USERS.with(|users| users.borrow_mut().insert(principal.clone(), new_user_credentials));
@@ -62,6 +63,8 @@ fn get_current_user(identity: String) -> Option<String> {
                 "health_data": user.health_data,
                 "personal_data": user.personal_data,
                 "provider_requests": user.provider_requests,
+                "user_owner": user.user_owner,
+                "user_owner_department": user.user_owner_department,
                 "user_type": user.user_type,
             });
             Some(user_json.to_string())

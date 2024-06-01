@@ -1,114 +1,111 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, DatePicker, Select, Button, notification } from 'antd';
+import { Card, Row, Col, DatePicker, TimePicker, Button, message, Table } from 'antd';
 import { DMS_backend } from 'declarations/DMS_backend';
-import { useConnect } from "@connect2ic/react"
-
-const { Option } = Select;
+import { useConnect } from "@connect2ic/react";
+import moment from 'moment';
 
 function ManageAppointments() {
-    const [form] = Form.useForm();
-    const [submitting, setSubmitting] = useState(false);
-    const [providers, setProviders] = useState([]);
-    const [selectedProvider, setSelectedProvider] = useState(null);
-    const [selectedDepartment, setSelectedDepartment] = useState(null);
-    const [departments, setDepartments] = useState([]);
-    const [doctors, setDoctors] = useState([]);
+    const [doc, setDoc] = useState(null);
+    const [appointmentDate, setAppointmentDate] = useState(null);
+    const [appointmentTime, setAppointmentTime] = useState(null);
+    const [appointments, setAppointments] = useState([]);
+
     const { principal, isConnected } = useConnect({
         onConnect: () => { },
         onDisconnect: () => { }
     });
-    
+
     useEffect(() => {
-        get_user_data(principal);
-    }, []);
+        if (isConnected) {
+            getCurrentDoctor();
+        }
+    }, [isConnected]);
 
-    const get_user_data = async (identity) => {
-        const userData = await DMS_backend.get_current_user(identity);
-        console.log(identity);
-        console.log("userData:", JSON.parse(userData)); // Log userData to check its value
+    useEffect(() => {
+        if (doc) {
+            listAppointments();
+        }
+    }, [doc]);
+
+    const getCurrentDoctor = async () => {
         try {
-            return JSON.parse(userData);
+            let mock_user = await DMS_backend.get_current_user(principal);
+            let user = JSON.parse(mock_user);
+            let mock_doc = await DMS_backend.get_current_doctor(user.user_owner, user.user_owner_department, user.identity);
+            setDoc(mock_doc[0]);
         } catch (error) {
-            console.error("Error parsing user data:", error);
-            return null; // Return null or handle the error in a different way
+            message.error('Failed to fetch doctor information');
         }
     };
 
-    const listProviders = async () => {
+    const createAppointment = async () => {
+        if (!appointmentDate || !appointmentTime) {
+            message.warning('Please select both date and time');
+            return;
+        }
+
+        const formattedDate = appointmentDate.format('YYYY-MM-DD');
+        const formattedTime = appointmentTime.format('HH:mm');
+
         try {
-            const providers = await DMS_backend.list_providers();
-            console.log(providers);
-            setProviders(providers);
+            await DMS_backend.create_appointment(doc.doctor_provider, doc.doctor_department, principal, formattedDate, formattedTime);
+            message.success('Appointment created successfully');
+            listAppointments();
         } catch (error) {
-            console.error('Error listing providers:', error);
-            notification.error({
-                message: 'Hata',
-                description: 'Sağlayıcıları listelerken bir hata oluştu. Lütfen tekrar deneyin.',
-            });
+            message.error('Failed to create appointment');
         }
     };
 
-    const onFinish = async (values) => {
+    const listAppointments = async () => {
         try {
-            setSubmitting(true);
-            await DMS_backend.create_appointment(
-                selectedProvider,
-                selectedDepartment,
-                values.doctor,
-                values.appointmentDate.format('YYYY-MM-DD'),
-                values.appointmentTime
-            );
-            notification.success({
-                message: 'Randevu Başarılı',
-                description: 'Randevunuz başarıyla oluşturuldu.',
-            });
-            form.resetFields();
+            let mock_appointments = await DMS_backend.list_appointments(doc.doctor_provider, doc.doctor_department, principal);
+            setAppointments(mock_appointments);
         } catch (error) {
-            console.error('Error creating appointment:', error);
-            notification.error({
-                message: 'Hata',
-                description: 'Randevu oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.',
-            });
-        } finally {
-            setSubmitting(false);
+            message.error('Failed to list appointments');
         }
     };
+
+    const columns = [
+        {
+            title: 'Date',
+            dataIndex: 'doctor_appointment_date',
+            key: 'doctor_appointment_date',
+        },
+        {
+            title: 'Time',
+            dataIndex: 'doctor_appointment_time',
+            key: 'doctor_appointment_time',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'doctor_appointment_status',
+            key: 'doctor_appointment_status',
+            render: status => (status === 0 ? 'Pending' : 'Confirmed')
+        },
+        {
+            title: 'Patient ID',
+            dataIndex: 'patient_id',
+            key: 'patient_id',
+        }
+    ];
 
     return (
-        <div>
-            <h1>Randevu Al</h1>
-            <Form
-                form={form}
-                layout="vertical"
-                onFinish={onFinish}
-            >
-                <Form.Item
-                    name="appointmentDate"
-                    label="Randevu Tarihi"
-                    rules={[{ required: true, message: 'Lütfen randevu tarihini seçin.' }]}
-                >
-                    <DatePicker format="YYYY-MM-DD" />
-                </Form.Item>
-                <Form.Item
-                    name="appointmentTime"
-                    label="Randevu Saati"
-                    rules={[{ required: true, message: 'Lütfen randevu saati seçin.' }]}
-                >
-                    <Select placeholder="Randevu Saati Seçin">
-                        {['09:00', '10:00', '11:00', '14:00', '15:00'].map(time => (
-                            <Option key={time} value={time}>
-                                {time}
-                            </Option>
-                        ))}
-                    </Select>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={submitting}>
-                        Randevu Al
+        <Row gutter={24}>
+            <Col span={12}>
+                <Card title="Manage Appointments">
+                    <DatePicker onChange={(date) => setAppointmentDate(date)} />
+                    <TimePicker onChange={(time) => setAppointmentTime(time)} format="HH:mm" />
+                    <Button type="primary" onClick={createAppointment} style={{ marginTop: '16px' }}>
+                        Create Appointment
                     </Button>
-                </Form.Item>
-            </Form>
-        </div>
+                </Card>
+            </Col>
+            <Col span={12}>
+                <Card title="Current Appointments">
+                    <Table dataSource={appointments} columns={columns} rowKey={(record) => record.doctor_appointment_date + record.doctor_appointment_time} />
+                </Card>
+            </Col>
+        </Row>
     );
 }
 

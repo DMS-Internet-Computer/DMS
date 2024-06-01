@@ -1,9 +1,10 @@
-
 mod func_user;
 mod func_provider;
 mod func_medications;
 mod func_departments;
 mod func_doctors;
+mod func_doctor_appointment;
+mod func_user_appointment;
 mod func_provider_request;
 
 use candid::{Principal, CandidType};
@@ -20,8 +21,11 @@ struct User {
     pub health_data: HealthData,
     pub personal_data: PersonalData,
     pub provider_requests: ProviderRequests,
+    pub user_owner: String,
+    pub user_owner_department: String,
     pub user_type: u8, // 0 normal 1 provider 2 doctor
 }
+
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct HealthData {
     pub height: String,
@@ -31,6 +35,7 @@ struct HealthData {
     pub diseases: Vec<String>,
     pub medications: Medications,
 }
+
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct PersonalData {
     pub name: String,
@@ -43,6 +48,7 @@ struct PersonalData {
     pub phone: String,
     pub picture: Vec<u8>,
 }
+
 type Medications = HashMap<String, Medication>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Medication {
@@ -64,7 +70,7 @@ struct Medication {
 type ActiveSessions = Vec<Session>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Session {
-    pub user_id: Principal, // Check here
+    pub user_id: Principal,
 }
 
 type Appointments = HashMap<Principal, Vec<AppointmentDetails>>;
@@ -79,7 +85,8 @@ struct AppointmentDetails {
 
 type Providers = HashMap<Principal, Provider>;
 #[derive(Clone, Debug, Serialize, CandidType)]
-struct Provider { 
+struct Provider {
+    pub provider_id: String,
     pub provider_name: String,
     pub provider_location: String,
     pub departments: Departments,
@@ -96,12 +103,12 @@ type Doctors = HashMap<String, Doctor>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct Doctor {
     pub doctor_provider: String,
+    pub doctor_id: String,
     pub doctor_name: String,
     pub doctor_department: String,
-    pub schedule: DoctorSchedule,
+    pub schedule:  Vec<DoctorAppointment>,
 }
 
-type DoctorSchedule = HashMap<String, Vec<DoctorAppointment>>;
 #[derive(Clone, Debug, CandidType, Serialize)]
 struct DoctorAppointment {
     pub patient_id: String,

@@ -44,6 +44,7 @@ fn update_provider_request(user_id: String, new_request_status: u8) -> Result<()
                         user.user_type = 1;
                         PROVIDERS.with(|providers| {
                             let new_provider = Provider {
+                                provider_id: user_id.clone(),
                                 provider_name: "".to_string(),
                                 provider_location: "".to_string(),
                                 departments: HashMap::new(),

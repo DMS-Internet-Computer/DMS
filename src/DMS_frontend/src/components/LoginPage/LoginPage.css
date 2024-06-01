@@ -5,7 +5,11 @@
     height: 100vh;
     position: relative;
   }
-  
+  canvas {
+    width: 100%;
+    height: 100vh;
+    display: block;
+  }
   .background-overlay {
     position: absolute;
     top: 0;
@@ -16,13 +20,16 @@
   }
   
   .login-card {
-    width: 300px;
+    border: none;
+    width: 350px;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1; /* Card'ı overlay'in üstüne getir */
+    border-radius: 8px; /* Card'ı overlay'in üstüne getir */
   }
   
+  .globe-card{
+    flex:3;
+  }
+
   .logo-container {
     display: flex;
     justify-content: center;
@@ -32,18 +39,5 @@
   
   .login-logo {
     width: 270px;
-    height: 160px;
+    height: auto;
   }
-  
-  .dms-text {
-    text-align: center;
-    margin-top: 20px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 24px; /* Yazı boyutunu artır */
-    color: #844343; /* Yazı rengini beyaz yap */
-  }
-  
-  .bold-text {
-    font-weight: bold; /* Yazıyı kalın yap */
-  }
-  

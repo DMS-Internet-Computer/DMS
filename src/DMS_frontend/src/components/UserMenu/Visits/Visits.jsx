@@ -59,7 +59,7 @@ function Visits(){
   const actionsMockData = [
     {
       key: '1',
-      time: '12.01.2024 15.00',
+      time: '10.01.2024 - 11.00',
       name: 'Blood Test',
     }
   ]
@@ -80,9 +80,9 @@ function Visits(){
   const diagnosisMockData = [
     {
       key: '1',
-      date: '12.01.2024 15.00',
+      date: '12.01.2024 - 15.00',
       diagnosis: 'Rinit',
-      doctor: 'Doctor A',
+      doctor: '2nd Favourite Doctor',
       department: 'Department A',
     }
   ]
@@ -95,8 +95,8 @@ function Visits(){
     },
     {
       title: 'Diagnosis',
-      dataIndex: 'number',
-      key: 'number',
+      dataIndex: 'diagnosis',
+      key: 'diagnosis',
     },
     {
       title: 'Doctor',
@@ -147,17 +147,35 @@ function Visits(){
       render: () => <a>Share</a>,
     },
   ];
-  const data = [];
-  for (let i = 0; i < 2; ++i) {
-    data.push({
-      key: i.toString(),
-      provider: 'A Hospital',
+  const data = [
+    {
+      key: 1,
+      provider: '2nd Favourite Hospital',
       department: 'Department A',
-      doctor: 'A Doctor',
-      appointmentId: 500,
-      date: '2014-12-24 23:12:00',
-    });
-  }
+      doctor: '2nd Favourite Doctor',
+      appointmentId: 2,
+      date: '12.01.2024 - 13.00',
+    },
+    {
+      key: 2,
+      provider: 'Favourite Hospital',
+      department: 'Department A',
+      doctor: 'Favourite Doctor',
+      appointmentId: 1,
+      date: '10.01.2024 - 10.00',
+    },
+
+  ];
+  // for (let i = 0; i < 2; ++i) {
+  //   data.push({
+  //     key: i.toString(),
+  //     provider: 'A Hospital',
+  //     department: 'Department A',
+  //     doctor: 'A Doctor',
+  //     appointmentId: 500,
+  //     date: '2014-12-24 23:12:00',
+  //   });
+  // }
   return (
     <>
       <Table

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DMS_backend } from 'declarations/DMS_backend';
-import { useConnect } from "@connect2ic/react"
+import { useConnect } from "@connect2ic/react";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -10,8 +10,13 @@ import {
     CarryOutOutlined,
     ExperimentOutlined,
     PaperClipOutlined,
+    PicLeftOutlined,
+    FileTextOutlined,
+    MedicineBoxOutlined,
+    DislikeOutlined,
+    BorderlessTableOutlined
 } from '@ant-design/icons';
-import { Spin, Divider, Button, Layout, Menu, theme, Card } from 'antd';
+import { Spin, Divider, Button, Layout, Menu, theme } from 'antd';
 import Prescriptions from '../UserMenu/Prescriptions/Prescriptions';
 import Reports from '../UserMenu/Reports/Reports';
 import Diseases from '../UserMenu/Diseases/Diseases';
@@ -41,8 +46,9 @@ function MainPage() {
     const [isProvider, setIsProvider] = useState(false);
     const [isDoctor, setIsDoctor] = useState(false);
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
-    const onChange = (key) => { };
     const [selectedPage, setSelectedPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const createUser = async () => {
             try {
@@ -58,16 +64,18 @@ function MainPage() {
             }
         };
 
-        async function fetchData() {
+        const fetchData = async () => {
             try {
                 const userData = await get_user_data(principal);
                 setUser(userData);
                 setIsProvider(userData.user_type === 1);
                 setIsDoctor(userData.user_type === 2);
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching user data:", error);
+                setLoading(false);
             }
-        }
+        };
 
         if (principal && isConnected) {
             createUser();
@@ -87,7 +95,6 @@ function MainPage() {
         }
     };
 
-    
     const providerMenuItems = [
         { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
         { key: '2', icon: <UserOutlined />, label: 'Manage Departments', pagenumber: 2, component: <ManageDepartments /> },
@@ -106,17 +113,25 @@ function MainPage() {
         { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
         { key: '2', icon: <CalendarOutlined />, label: 'Appointments', pagenumber: 2, component: <Appointments /> },
         { key: '3', icon: <CarryOutOutlined />, label: 'Visits', pagenumber: 3, component: <Visits /> },
-        { key: '4', icon: <UploadOutlined />, label: 'Prescriptions', pagenumber: 4, component: <Prescriptions /> },
+        { key: '4', icon: <FileTextOutlined />, label: 'Prescriptions', pagenumber: 4, component: <Prescriptions /> },
         { key: '5', icon: <PaperClipOutlined />, label: 'Reports', pagenumber: 5, component: <Reports /> },
-        { key: '6', icon: <UploadOutlined />, label: 'Diseases', pagenumber: 6, component: <Diseases /> },
+        { key: '6', icon: <BorderlessTableOutlined />, label: 'Diseases', pagenumber: 6, component: <Diseases /> },
         { key: '7', icon: <ExperimentOutlined />, label: 'Tests', pagenumber: 7, component: <Tests /> },
-        { key: '8', icon: <UploadOutlined />, label: 'Radiological Images', pagenumber: 8, component: <RadiologicalImages /> },
-        { key: '9', icon: <UploadOutlined />, label: 'Allergies', pagenumber: 9, component: <Allergies /> },
-        { key: '10', icon: <UploadOutlined />, label: 'Medications', pagenumber: 10, component: <Medications /> },
+        { key: '8', icon: <PicLeftOutlined />, label: 'Radiological Images', pagenumber: 8, component: <RadiologicalImages /> },
+        { key: '9', icon: <DislikeOutlined />, label: 'Allergies', pagenumber: 9, component: <Allergies /> },
+        { key: '10', icon: <MedicineBoxOutlined />, label: 'Medications', pagenumber: 10, component: <Medications /> },
         { key: '11', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 11, component: <ProviderRequests /> },
     ];
 
     const MenuItems = isProvider ? providerMenuItems : (isDoctor ? doctorMenuItems : userMenuItems);
+
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Spin tip="Loading..." size="large" />
+            </div>
+        );
+    }
 
     return (
         <div className='main-page'>
@@ -169,7 +184,7 @@ function MainPage() {
                 </Layout>
             </Layout>
         </div>
-    )
+    );
 }
 
 export default MainPage;

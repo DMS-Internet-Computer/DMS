@@ -25,7 +25,7 @@ function ProviderRequests() {
     setLoading(true); 
     try {
       const requestsData = await DMS_backend.list_provider_requests();
-      const otherRequestData = requestsData.filter(request => request.provider_id !== principal);
+      const otherRequestData = requestsData.filter(request => (request.provider_id !== principal && request.request_status !== 1));
       const selfRequestData = requestsData.filter(request => request.provider_id === principal);
       console.log(otherRequestData);
       console.log(selfRequestData);

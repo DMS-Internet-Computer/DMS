@@ -42,6 +42,8 @@ type User = record {
   health_data: HealthData;
   personal_data: PersonalData;
   provider_requests: ProviderRequests;
+  user_owner: text;
+  user_owner_department: text;
   user_type: nat8;
 };
 
@@ -51,6 +53,7 @@ type Department = record {
 };
 
 type Provider = record {
+  provider_id: text;
   provider_name: text;
   provider_location: text;
   departments: vec record {text; Department};
@@ -58,12 +61,12 @@ type Provider = record {
 
 type Doctor = record {
   doctor_provider: text;
+  doctor_id: text;
   doctor_name: text;
   doctor_department: text;
-  schedule: DoctorSchedule;
+  schedule: vec DoctorAppointment;
 };
 
-type DoctorSchedule = vec record {text; vec DoctorAppointment};
 type DoctorAppointment = record {
   patient_id: text;
   doctor_appointment_date: text;
@@ -124,12 +127,18 @@ update_user_picture: (
 // doctor man
   add_doctor: (provider_id: text, doctor_id: text, new_doctor_name: text, new_doctor_department: text) -> (variant {Ok: null; Err: text});
   list_doctors: (provider_id: text) -> (vec Doctor);
+  list_department_doctors: (provider_id: text, department_name: text) -> (vec Doctor);
+  get_current_doctor: (provider_id: text, department_name: text, doctor_id: text) -> (opt Doctor);
+
 // department man
   add_department : (provider_id: text, new_department_name: text) -> (variant {Ok: null; Err: text});
   list_departments : (provider_id: text) -> (vec Department);
 // appointment man
   create_appointment: (provider_id: text, department_name: text, doctor_id: text, new_appointment_date: text, new_appointment_time: text) -> (variant {Ok: null; Err: text});
   list_appointments: (provider_id: text, department_name: text, doctor_id: text) -> (vec DoctorAppointment);
+// schedule man
+  schedule_appointment: (provider_id: text, department_name: text, doctor_id: text, appointment_date: text, appointment_time: text, patient_id: text) -> (variant {Ok: null; Err: text});
+
 // medications man
   add_medication : (user_id: text, prescription_date: text, barcode: text, prescription_number: text, medicine_name: text, dosage: text, period: text, usage_method: text, usage_count: text, box_count: text, provider_name: text, doctor_name: text, box_image: vec nat8, prospectus_pdf: vec nat8) -> (variant {Ok: null; Err: text});
   list_medications : (user_id: text) -> (variant {Ok: vec Medication; Err: text});
