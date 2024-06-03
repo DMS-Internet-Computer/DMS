@@ -1,19 +1,22 @@
-import React, { useEffect, useState, Suspense } from 'react'; // Import Suspense
-import { Card, Row, Col, DatePicker, TimePicker, Button, message, Table, Tooltip, Modal } from 'antd';
+import React, { useEffect, useState, Suspense } from 'react';
+import { Card, Row, Col, DatePicker, TimePicker, Space, Button, message, Table, Tooltip, Modal, Spin } from 'antd'; // Import Spin
 import { DMS_backend } from 'declarations/DMS_backend';
 import { useConnect } from "@connect2ic/react";
 import { UserOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage } from '@react-three/drei';
-import ThreeDModel from './ThreeDModel'; // Import the 3D model component
+import ThreeDModel from './ThreeDModel';
 import PatientModal from './PatientModal';
+
 function ManageAppointments() {
     const [doc, setDoc] = useState(null);
     const [appointmentDate, setAppointmentDate] = useState(null);
     const [appointmentTime, setAppointmentTime] = useState(null);
     const [appointments, setAppointments] = useState([]);
     const [selectedPatient, setSelectedPatient] = useState(null);
+    const [loadingAppointments, setLoadingAppointments] = useState(false); // State for loading appointments
+    const [loadingDoctor, setLoadingDoctor] = useState(false); // State for loading doctor info
 
     const { principal, isConnected } = useConnect({
         onConnect: () => { },
@@ -34,12 +37,15 @@ function ManageAppointments() {
 
     const getCurrentDoctor = async () => {
         try {
+            setLoadingDoctor(true); // Set loading to true while fetching doctor info
             let mock_user = await DMS_backend.get_current_user(principal);
             let user = JSON.parse(mock_user);
             let mock_doc = await DMS_backend.get_current_doctor(user.user_owner, user.user_owner_department, user.identity);
             setDoc(mock_doc[0]);
         } catch (error) {
             message.error('Failed to fetch doctor information');
+        } finally {
+            setLoadingDoctor(false); // Set loading to false after fetching doctor info
         }
     };
 
@@ -63,10 +69,13 @@ function ManageAppointments() {
 
     const listAppointments = async () => {
         try {
+            setLoadingAppointments(true); // Set loading to true while fetching appointments
             let mock_appointments = await DMS_backend.list_appointments(doc.doctor_provider, doc.doctor_department, principal);
             setAppointments(mock_appointments);
         } catch (error) {
             message.error('Failed to list appointments');
+        } finally {
+            setLoadingAppointments(false); // Set loading to false after fetching appointments
         }
     };
 
@@ -114,16 +123,21 @@ function ManageAppointments() {
         <Row gutter={24}>
             <Col span={12}>
                 <Card title="Manage Appointments">
-                    <DatePicker onChange={(date) => setAppointmentDate(date)} />
-                    <TimePicker onChange={(time) => setAppointmentTime(time)} format="HH:mm" />
-                    <Button type="primary" onClick={createAppointment} style={{ marginTop: '16px' }}>
-                        Create Appointment
-                    </Button>
+                    <Space>
+                        <DatePicker onChange={(date) => setAppointmentDate(date)} />
+                        <TimePicker onChange={(time) => setAppointmentTime(time)} format="HH:mm" />
+                        <Button type="primary" onClick={createAppointment}>
+                            Create Appointment
+                        </Button>
+                    </Space>
+
                 </Card>
             </Col>
             <Col span={12}>
                 <Card title="Current Appointments">
-                    <Table dataSource={appointments} columns={columns} rowKey={(record) => record.doctor_appointment_date + record.doctor_appointment_time} />
+                    <Spin spinning={loadingAppointments || loadingDoctor}> {/* Show Spin component while loading */}
+                        <Table dataSource={appointments} columns={columns} rowKey={(record) => record.doctor_appointment_date + record.doctor_appointment_time} />
+                    </Spin>
                 </Card>
             </Col>
             <Modal
@@ -131,16 +145,13 @@ function ManageAppointments() {
                 visible={selectedPatient !== null}
                 onCancel={handleCloseModal}
                 footer={null}
-                centered // Center the modal
-                width={1600} // Set a decent width
+                centered
+                width={1600}
             >
-                {/* Render patient details here */}
-                {selectedPatient && <p>Patient ID: {selectedPatient}</p>}
                 <Row gutter={24}>
-                    <Col span={12}>
+                    <Col span={8}>
                         <Card>
-                            <div style={{ width: '100%', height: '500px', marginTop: '20px' }}>
-                            <Canvas>
+                            <Canvas style={{ width: '100%', height: '570px', marginTop: '20px' }}>
                                 <Suspense fallback={null}>
                                     <Stage>
                                         <ThreeDModel />
@@ -148,12 +159,10 @@ function ManageAppointments() {
                                 </Suspense>
                                 <OrbitControls />
                             </Canvas>
-                            </div>
                         </Card>
-
                     </Col>
-                    <Col span={12}>
-                        <PatientModal />
+                    <Col span={16}>
+                        <PatientModal patientId={selectedPatient} />
                     </Col>
                 </Row>
             </Modal>

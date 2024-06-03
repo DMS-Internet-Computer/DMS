@@ -24,6 +24,8 @@ type HealthData = record {
     allergies: vec text;
     diseases: vec text;
     medications: vec text;
+    visits: vec text;
+    radiological_images: vec text;
 };
 type PersonalData = record {
     name: text;
@@ -95,7 +97,14 @@ type Medication = record {
   prospectus_pdf: vec nat8;
 };
 
-
+type RadiologicalImage = record {
+      date: text;
+      provider_name: text;
+      doctor_name: text;
+      explanation: text;
+      report: vec nat8;
+      image: vec nat8;
+}
 
 service : {
 
@@ -143,6 +152,9 @@ update_user_picture: (
 // medications man
   add_medication : (user_id: text, prescription_date: text, barcode: text, prescription_number: text, medicine_name: text, dosage: text, period: text, usage_method: text, usage_count: text, box_count: text, provider_name: text, doctor_name: text, box_image: vec nat8, prospectus_pdf: vec nat8) -> (variant {Ok: null; Err: text});
   list_medications : (user_id: text) -> (variant {Ok: vec Medication; Err: text});
+// radiology man
+  add_radiological_image : (user_id: text, date: text, provider_name: text, doctor_name: text, explanation: text, report: vec nat8, image: vec nat8) -> (variant {Ok: null; Err: text});
+  list_radiological_images : (user_id: text) -> (variant {Ok: vec RadiologicalImage; Err: text});
 
   create_provider_request : (user_id: text, provider_name: text) -> (variant {Ok: null; Err: text});
   list_provider_requests : () -> (vec ProviderRequest);

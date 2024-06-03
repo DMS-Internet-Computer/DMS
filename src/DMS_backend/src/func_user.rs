@@ -22,7 +22,9 @@ fn create_user(identity: String) -> Result<(), String> {
                     blood_type: "".to_string(),
                     allergies: Vec::new(),
                     diseases: Vec::new(),
-                    medications: HashMap::new()
+                    medications: HashMap::new(),
+                    visits: HashMap::new(),
+                    radiological_images: HashMap::new(),
                 },
                 personal_data: PersonalData {
                     name: "".to_string(),

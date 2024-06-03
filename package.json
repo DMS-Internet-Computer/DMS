@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.1.7",
     "moment": "^2.30.1",
+    "react-three-fiber": "^6.0.13",
     "tailwind-merge": "^2.3.0",
     "three": "^0.164.1",
     "three-globe": "^2.31.0"

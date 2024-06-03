@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { Card } from 'antd';
 
 const ThreeDModel = () => {
-  const { scene } = useGLTF('/human.glb'); // Model dosyasının doğru yolda olduğundan emin olun
+  const { scene } = useGLTF('/human.glb');
   const redDotRef = useRef();
   const [hovered, setHovered] = useState(false);
 
@@ -13,7 +13,7 @@ const ThreeDModel = () => {
       <primitive object={scene} scale={0.5} />
       <mesh
         ref={redDotRef}
-        position={[0, 0.65, 0.062]} // Göğüs kısmına konumlandırın
+        position={[0, 0.65, 0.062]}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
@@ -30,7 +30,5 @@ const ThreeDModel = () => {
     </>
   );
 };
-
-useGLTF.preload('/human.glb');
 
 export default ThreeDModel;

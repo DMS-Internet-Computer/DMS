@@ -19,7 +19,7 @@ import {
   PictureOutlined,
   FilePptOutlined,
 } from '@ant-design/icons';
-function Diseases() {
+function DoctorDiseases() {
   const [modalOpen, setModalOpen] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -155,4 +155,4 @@ function Diseases() {
   );
 }
 
-export default Diseases;
+export default DoctorDiseases;

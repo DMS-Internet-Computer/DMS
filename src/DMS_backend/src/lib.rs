@@ -1,6 +1,7 @@
 mod func_user;
 mod func_provider;
 mod func_medications;
+mod func_radiological_images;
 mod func_departments;
 mod func_doctors;
 mod func_doctor_appointment;
@@ -34,6 +35,29 @@ struct HealthData {
     pub allergies: Vec<String>,
     pub diseases: Vec<String>,
     pub medications: Medications,
+    pub visits: Visits,
+    pub radiological_images: RadiologicalImages,
+}
+
+type Visits = HashMap<String, Visit>;
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct Visit {
+    // pub tests: Vec<Test>,
+    pub medications: Vec<Medication>,
+    // pub prescriptions: Vec<Prescription>,
+    pub radiological_images: Vec<RadiologicalImage>,
+    // pub diagnoses: Vec<Diagnose>
+}
+
+type RadiologicalImages = HashMap<String, RadiologicalImage>;
+#[derive(Clone, Debug, CandidType, Serialize)]
+struct RadiologicalImage {
+    pub date: String,
+    pub provider_name: String,
+    pub doctor_name: String,
+    pub explanation: String,
+    pub report: Vec<u8>,
+    pub image: Vec<u8>,
 }
 
 #[derive(Clone, Debug, CandidType, Serialize)]

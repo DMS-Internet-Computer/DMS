@@ -103,24 +103,22 @@ function MainPage() {
     ];
 
     const doctorMenuItems = [
-        { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
-        { key: '2', icon: <UserOutlined />, label: 'Manage Appointments', pagenumber: 2, component: <ManageAppointments/>},
-        { key: '3', icon: <UserOutlined />, label: 'Patient Management', pagenumber: 3 },
-        { key: '4', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 4, component: <ProviderRequests /> },
+        { key: '1', icon: <UserOutlined />, label: 'Management', pagenumber: 1, component: <ManageAppointments /> },
+        { key: '2', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 2, component: <ProviderRequests /> },
     ];
 
     const userMenuItems = [
-        { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <MainContent /> },
-        { key: '2', icon: <CalendarOutlined />, label: 'Appointments', pagenumber: 2, component: <Appointments /> },
-        { key: '3', icon: <CarryOutOutlined />, label: 'Visits', pagenumber: 3, component: <Visits /> },
-        { key: '4', icon: <FileTextOutlined />, label: 'Prescriptions', pagenumber: 4, component: <Prescriptions /> },
-        { key: '5', icon: <PaperClipOutlined />, label: 'Reports', pagenumber: 5, component: <Reports /> },
-        { key: '6', icon: <BorderlessTableOutlined />, label: 'Diseases', pagenumber: 6, component: <Diseases /> },
-        { key: '7', icon: <ExperimentOutlined />, label: 'Tests', pagenumber: 7, component: <Tests /> },
-        { key: '8', icon: <PicLeftOutlined />, label: 'Radiological Images', pagenumber: 8, component: <RadiologicalImages /> },
-        { key: '9', icon: <DislikeOutlined />, label: 'Allergies', pagenumber: 9, component: <Allergies /> },
-        { key: '10', icon: <MedicineBoxOutlined />, label: 'Medications', pagenumber: 10, component: <Medications /> },
-        { key: '11', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 11, component: <ProviderRequests /> },
+        { key: '1', icon: <UserOutlined />, label: 'Main Page', pagenumber: 1, component: <Appointments /> },
+        // { key: '2', icon: <CalendarOutlined />, label: 'Appointments', pagenumber: 2, component: <Appointments /> },
+        { key: '2', icon: <CarryOutOutlined />, label: 'Visits', pagenumber: 2, component: <Visits /> },
+        { key: '3', icon: <FileTextOutlined />, label: 'Prescriptions', pagenumber: 3, component: <Prescriptions /> },
+        { key: '4', icon: <PaperClipOutlined />, label: 'Reports', pagenumber: 4, component: <Reports /> },
+        { key: '5', icon: <BorderlessTableOutlined />, label: 'Diseases', pagenumber: 5, component: <Diseases /> },
+        { key: '6', icon: <ExperimentOutlined />, label: 'Tests', pagenumber: 6, component: <Tests /> },
+        { key: '7', icon: <PicLeftOutlined />, label: 'Radiological Images', pagenumber: 7, component: <RadiologicalImages /> },
+        { key: '8', icon: <DislikeOutlined />, label: 'Allergies', pagenumber: 8, component: <Allergies /> },
+        { key: '9', icon: <MedicineBoxOutlined />, label: 'Medications', pagenumber: 9, component: <Medications /> },
+        { key: '10', icon: <UploadOutlined />, label: 'Provider Requests', pagenumber: 10, component: <ProviderRequests /> },
     ];
 
     const MenuItems = isProvider ? providerMenuItems : (isDoctor ? doctorMenuItems : userMenuItems);
